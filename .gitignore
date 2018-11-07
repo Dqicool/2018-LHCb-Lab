@@ -35,3 +35,7 @@
 Software/B2HHH_MagnetDown.root
 Software/B2HHH_MagnetUp.root
 Software/PhaseSpaceSimulation.root
+
+.DS_Store
+Software/.DS_Store
+Software/.DS_Store
