@@ -1,0 +1,18 @@
+{
+    "workbench.colorTheme": "Dracula",
+    "files.autoSave": "onFocusChange",
+    "editor.fontSize": 15,
+    "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "smooth",
+    "terminal.explorerKind": "external",
+    "C_Cpp.clang_format_fallbackStyle": "LLVM",
+    "C_Cpp.clang_format_path": "clang",
+    "workbench.startupEditor": "none",
+    "explorer.openEditors.visible": 0,
+    "explorer.confirmDelete": false,
+    "git.enableSmartCommit": true,
+    "terminal.integrated.fontFamily": "monospace",
+    "editor.fontFamily": "'Inziu Iosevka Slab SC', 'Inziu Iosevka Slab SC','Inziu Iosevka Slab SC',monospace",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "explorer.confirmDragAndDrop": false,
+}
