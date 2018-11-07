@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/.gitattributes": true,
+        "**/.gitignore": true,
+        "**/*.root": true,
+        "**/LICENSE": true,
+        "**/README.md": true,
+        "**/Makefile":true,
+        ".vscode":true
+    }
+}
