@@ -4,7 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Applications/root_v6.14.04/include"
+                "/Applications/root/include"
             ],
             "defines": [],
             "macFrameworkPath": [
