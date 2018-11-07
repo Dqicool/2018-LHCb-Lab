@@ -7,17 +7,17 @@
 class MyAnalysis : public Analysis {
 public:
     // Define your histograms here
-    TH1F           *h_PX;
-    TH1F           *h_PY;
-    TH1F           *h_PZ;
-    TH2F           *h_TXTY;
+    TH1F        *h_PX;
+    TH1F        *h_PY;
+    TH1F        *h_PZ;
+    TH2F        *h_TXTY;
 
-    TH1F           *h_H1Pi;
-    TH1F	   *h_H1Ka;
-    TH1F	   *h_H2Pi;
-    TH1F	   *h_H2Ka;
-    TH1F	   *h_H3Pi;
-    TH1F	   *h_H3Ka;
+    TH1F        *h_H1Pi;
+    TH1F	    *h_H1Ka;
+    TH1F	    *h_H2Pi;
+    TH1F	    *h_H2Ka;
+    TH1F	    *h_H3Pi;
+    TH1F	    *h_H3Ka;
 
     void     BookHistos();
 
@@ -36,17 +36,17 @@ void MyAnalysis::BookHistos()
     // push_back() adds the histograms to a vector v_Histos.  This
     // will take care of writing out histograms in
     // Analysis::SaveHistos
-      v_Histos.push_back( h_PX   = new TH1F("h_PX",  "", 100, -1e4, 1e4) );
-      v_Histos.push_back( h_PY   = new TH1F("h_PY",  "", 100, -1e4, 1e4) );
-      v_Histos.push_back( h_PZ   = new TH1F("h_PZ",  "", 100, -1e5, 1e5) );
-      v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 100, -1,1, 100,-1, 1) );
+    v_Histos.push_back( h_PX   = new TH1F("h_PX",  "", 100, -1e4, 1e4) );
+    v_Histos.push_back( h_PY   = new TH1F("h_PY",  "", 100, -1e4, 1e4) );
+    v_Histos.push_back( h_PZ   = new TH1F("h_PZ",  "", 100, -1e5, 1e5) );
+    v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 100, -1,1, 100,-1, 1) );
 
-      v_Histos.push_back(h_H1Pi = new TH1F("h_H1Pi","", 100, 0, 1) );
-      v_Histos.push_back(h_H1Ka = new TH1F("h_H1Ka","", 100, 0, 1) );
-      v_Histos.push_back(h_H2Pi = new TH1F("h_H2Pi","", 100, 0, 1) );
-      v_Histos.push_back(h_H2Ka = new TH1F("h_H2Ka","", 100, 0, 1) );
-      v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 100, 0, 1) );
-      v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 100, 0, 1) );
+    v_Histos.push_back(h_H1Pi = new TH1F("h_H1Pi","", 100, 0, 1) );
+    v_Histos.push_back(h_H1Ka = new TH1F("h_H1Ka","", 100, 0, 1) );
+    v_Histos.push_back(h_H2Pi = new TH1F("h_H2Pi","", 100, 0, 1) );
+    v_Histos.push_back(h_H2Ka = new TH1F("h_H2Ka","", 100, 0, 1) );
+    v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 100, 0, 1) );
+    v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 100, 0, 1) );
 }
 
 Bool_t MyAnalysis::Cut()
