@@ -42,3 +42,6 @@ Software/.DS_Store
 .DS_Store
 Software/.DS_Store
 Software/plots/.DS_Store
+*.root
+Software/outputDataMagnetDown.root
+.DS_Store

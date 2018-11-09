@@ -110,43 +110,43 @@ void Analysis::Init(TChain *chain, std::string choice)
     myChain->SetBranchAddress("H3_PZ", &H3_PZ);
     if ( "PhaseSpace" == choice ) {
 	// some variables don't exist, so set them to default values
-	B_FlightDistance = 0.;
-	B_VertexChi2 = 0.;
-	H1_ProbK = 0.;
-	H1_ProbPi = 0.;
-	H1_Charge = 0;
-	H1_IPChi2 = 0.;
-	H1_isMuon = 0;
-	H2_ProbK = 0.;
-	H2_ProbPi = 0.;
-	H2_Charge = 0;
-	H2_IPChi2 = 0.;
-	H2_isMuon = 0;
-	H3_ProbK = 0.;
-	H3_ProbPi = 0.;
-	H3_Charge = 0;
-	H3_IPChi2 = 0.;
-	H3_isMuon = 0;
+	    B_FlightDistance = 0.;
+        B_VertexChi2 = 0.;
+        H1_ProbK = 0.;
+        H1_ProbPi = 0.;
+        H1_Charge = 0;
+        H1_IPChi2 = 0.;
+        H1_isMuon = 0;
+        H2_ProbK = 0.;
+        H2_ProbPi = 0.;
+        H2_Charge = 0;
+        H2_IPChi2 = 0.;
+        H2_isMuon = 0;
+        H3_ProbK = 0.;
+        H3_ProbPi = 0.;
+        H3_Charge = 0;
+        H3_IPChi2 = 0.;
+        H3_isMuon = 0;
     }
     else {
 	// normal tree, declare remaining branches
-	myChain->SetBranchAddress("B_FlightDistance", &B_FlightDistance);
-	myChain->SetBranchAddress("B_VertexChi2", &B_VertexChi2);
-	myChain->SetBranchAddress("H1_ProbK", &H1_ProbK);
-	myChain->SetBranchAddress("H1_ProbPi", &H1_ProbPi);
-	myChain->SetBranchAddress("H1_Charge", &H1_Charge);
-	myChain->SetBranchAddress("H1_IPChi2", &H1_IPChi2);
-	myChain->SetBranchAddress("H1_isMuon", &H1_isMuon);
-	myChain->SetBranchAddress("H2_ProbK", &H2_ProbK);
-	myChain->SetBranchAddress("H2_ProbPi", &H2_ProbPi);
-	myChain->SetBranchAddress("H2_Charge", &H2_Charge);
-	myChain->SetBranchAddress("H2_IPChi2", &H2_IPChi2);
-	myChain->SetBranchAddress("H2_isMuon", &H2_isMuon);
-	myChain->SetBranchAddress("H3_ProbK", &H3_ProbK);
-	myChain->SetBranchAddress("H3_ProbPi", &H3_ProbPi);
-	myChain->SetBranchAddress("H3_Charge", &H3_Charge);
-	myChain->SetBranchAddress("H3_IPChi2", &H3_IPChi2);
-	myChain->SetBranchAddress("H3_isMuon", &H3_isMuon);
+        myChain->SetBranchAddress("B_FlightDistance", &B_FlightDistance);
+        myChain->SetBranchAddress("B_VertexChi2", &B_VertexChi2);
+        myChain->SetBranchAddress("H1_ProbK", &H1_ProbK);
+        myChain->SetBranchAddress("H1_ProbPi", &H1_ProbPi);
+        myChain->SetBranchAddress("H1_Charge", &H1_Charge);
+        myChain->SetBranchAddress("H1_IPChi2", &H1_IPChi2);
+        myChain->SetBranchAddress("H1_isMuon", &H1_isMuon);
+        myChain->SetBranchAddress("H2_ProbK", &H2_ProbK);
+        myChain->SetBranchAddress("H2_ProbPi", &H2_ProbPi);
+        myChain->SetBranchAddress("H2_Charge", &H2_Charge);
+        myChain->SetBranchAddress("H2_IPChi2", &H2_IPChi2);
+        myChain->SetBranchAddress("H2_isMuon", &H2_isMuon);
+        myChain->SetBranchAddress("H3_ProbK", &H3_ProbK);
+        myChain->SetBranchAddress("H3_ProbPi", &H3_ProbPi);
+        myChain->SetBranchAddress("H3_Charge", &H3_Charge);
+        myChain->SetBranchAddress("H3_IPChi2", &H3_IPChi2);
+        myChain->SetBranchAddress("H3_isMuon", &H3_isMuon);
     }
     BookHistos();
 }
@@ -198,50 +198,50 @@ int Analysis::AnalysisMain(int argc, char* argv[])
     std::string choice = "";
     TChain* chain;
     if ( argc > 1 ) {
-	choice = argv[1];
-	if ( "PhaseSpace" == choice ) { 
-	    chain = new TChain("PhaseSpaceTree");
-	    chain->Add( "PhaseSpaceSimulation.root" );
-	    oname = "outputPhaseSpace.root";
-	    std::cout << "Performing phase space analysis" << std::endl;
-	}    
-	else if ( "DataMagnetDown" == choice ) { 
-	    chain = new TChain("DecayTree");
-	    chain->Add( "B2HHH_MagnetDown.root" );
-	    oname = "outputDataMagnetDown.root";
-	    std::cout << "Performing data analysis with magnet polarity down" << std::endl;
-	}    
-	else if ( "DataMagnetUp" == choice ) { 
-	    chain = new TChain("DecayTree");
-	    chain->Add( "B2HHH_MagnetUp.root" );
-	    oname = "outputDataMagnetUp.root";
-	    std::cout << "Performing data analysis with magnet polarity up" << std::endl;
-	}    
-	else if ( "DataAll" == choice ) { 
-	    chain = new TChain("DecayTree");
-	    chain->Add( "B2HHH_MagnetDown.root" );
-	    chain->Add( "B2HHH_MagnetUp.root" );
-	    oname = "outputDataAll.root";
-	    std::cout << "Performing data analysis with both magnet polarities" << std::endl;
-	}    
-	else {
-	    std::cout << "Unknown analysis type" << std::endl;
-	    std::cout << "Options are PhaseSpace, DataAll, DataMagnetDown, DataMagnetUp" << std::endl;
-	    return 0;
-	}
+        choice = argv[1];
+        if ( "PhaseSpace" == choice ) { 
+            chain = new TChain("PhaseSpaceTree");
+            chain->Add( "Data/PhaseSpaceSimulation.root" );
+            oname = "Output/PhaseSpace.root";
+            std::cout << "Performing phase space analysis" << std::endl;
+        }    
+        else if ( "DataMagnetDown" == choice ) { 
+            chain = new TChain("DecayTree");
+            chain->Add( "Data/B2HHH_MagnetDown.root" );
+            oname = "Output/DataMagnetDown.root";
+            std::cout << "Performing data analysis with magnet polarity down" << std::endl;
+        }    
+        else if ( "DataMagnetUp" == choice ) { 
+            chain = new TChain("DecayTree");
+            chain->Add( "Data/B2HHH_MagnetUp.root" );
+            oname = "Output/DataMagnetUp.root";
+            std::cout << "Performing data analysis with magnet polarity up" << std::endl;
+        }    
+        else if ( "DataAll" == choice ) { 
+            chain = new TChain("DecayTree");
+            chain->Add( "Data/B2HHH_MagnetDown.root" );
+            chain->Add( "Data/B2HHH_MagnetUp.root" );
+            oname = "Output/DataAll.root";
+            std::cout << "Performing data analysis with both magnet polarities" << std::endl;
+        }    
+        else {
+            std::cout << "Unknown analysis type" << std::endl;
+            std::cout << "Options are PhaseSpace, DataAll, DataMagnetDown, DataMagnetUp" << std::endl;
+            return 0;
+        }
     }
     else {
-	std::cout << "Please specify which samples you wish to analyse" << std::endl;
-	std::cout << "Options are PhaseSpace, DataAll, DataMagnetDown, DataMagnetUp" << std::endl;
-	std::cout << "You many also specify the number of events to analyse. If this argument is not given the full sample is analysed." << std::endl;
-	return 0;
+        std::cout << "Please specify which samples you wish to analyse" << std::endl;
+        std::cout << "Options are PhaseSpace, DataAll, DataMagnetDown, DataMagnetUp" << std::endl;
+        std::cout << "You many also specify the number of events to analyse. If this argument is not given the full sample is analysed." << std::endl;
+        return 0;
     }
 
     // checking whether number of events is to be limited
     int nevts = -1;
     if ( argc > 2 ) { 
-	nevts = atoi( argv[2] );
-	std::cout << "Setting number of output events to " << nevts << std::endl;
+        nevts = atoi( argv[2] );
+        std::cout << "Setting number of output events to " << nevts << std::endl;
     }
 
     Init(chain, choice);

@@ -5,20 +5,24 @@ void drawOutput() {
 
     // Open the root file that was produced by running the example program
     //TFile *f = new TFile("outputPhaseSpace.root");
-    TFile *f = new TFile("outputDataMagnetDown.root");
+    TFile *f1 = new TFile("outputDataMagnetDown.root");
+    TFile *f2 = new TFile("outputPhaseSpace.root");
+    TFile *f3 = new TFile("outputDataAll.root");
 
     // Get pointers to the example histograms that were made 
-    TH1F *hx = (TH1F*)f->Get("h_PX");
-    TH1F *hy = (TH1F*)f->Get("h_PY");
-    TH2F *hxy = (TH2F*)f->Get("h_TXTY");
+    TH1F *hx = (TH1F*)f1->Get("h_PX");
+    TH1F *hy = (TH1F*)f1->Get("h_PY");
+    TH2F *hxy = (TH2F*)f1->Get("h_TXTY");
     
-    TH1F *H1Pi = (TH1F*)f->Get("h_H1Pi");
-    TH1F *H1Ka = (TH1F*)f->Get("h_H1Ka");
-    TH1F *H2Pi = (TH1F*)f->Get("h_H2Pi");
-    TH1F *H2Ka = (TH1F*)f->Get("h_H2Ka");
-    TH1F *H3Pi = (TH1F*)f->Get("h_H3Pi");
-    TH1F *H3Ka = (TH1F*)f->Get("h_H3Ka");
-
+    TH1F *H1Pi = (TH1F*)f1->Get("h_H1Pi");
+    TH1F *H1Ka = (TH1F*)f1->Get("h_H1Ka");
+    TH1F *H2Pi = (TH1F*)f1->Get("h_H2Pi");
+    TH1F *H2Ka = (TH1F*)f1->Get("h_H2Ka");
+    TH1F *H3Pi = (TH1F*)f1->Get("h_H3Pi");
+    TH1F *H3Ka = (TH1F*)f1->Get("h_H3Ka");
+    
+    TH1F *hBM0 = (TH1F*)f3->Get("h_B_M0");
+    
     // Create a canvas onto which the histograms are plotted and which can be saved
     TCanvas *c1 = new TCanvas("c1","",600,400);
     // Draw the first histogram with a blue line, and an x-axis title
@@ -67,5 +71,10 @@ void drawOutput() {
     H3Ka->Draw("same");
     c3->SaveAs("Particle3Prob.pdf");
     
-    
+    //Save plot of invariant mass for B meson
+    TCanvas *c6= new TCanvas("c6","",600,400);
+    hBM0->SetLineColor(kBlue);
+    hBM0->GetXaxis()->SetTitle("B-Meson Invariant Mass");
+    hBM0->Draw();
+    c6->SaveAs("plots/B-MesonInvariantMass_final_pion.pdf");
 }
