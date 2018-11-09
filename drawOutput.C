@@ -85,10 +85,10 @@ void drawOutput() {
     c6->SaveAs("Plots/B-MesonInvariantMass_final_pion.pdf");
 
     TCanvas *c7= new TCanvas("c7","",600,400);
-    hHM->SetLineColor(kBlue);
-    hHM->GetXaxis()->SetTitle("B-Meson Invariant Mass");
-    hHM->Draw();
-    hLM->SetLineColor(kRed);
-    hLM->Draw("same");
+    hLM->SetLineColor(kBlue);
+    hLM->GetXaxis()->SetTitle("B-Meson Invariant Mass");
+    hLM->Draw();
+    hHM->SetLineColor(kRed);
+    hHM->Draw("same");
     c7->SaveAs("Plots/Diff_Mass_Pion_Pairs.pdf");
 }

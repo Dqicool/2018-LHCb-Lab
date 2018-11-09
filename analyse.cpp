@@ -58,8 +58,8 @@ void MyAnalysis::BookHistos()
     //Invariant Mass of B
     v_Histos.push_back(h_B_M0 =  new TH1F("h_B_M0",  "", 1000, 3.8e3, 6.2e3) );
     //Higher and Lower Mass Pairs
-    v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 7e3) );
-    v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 7e3) );
+    v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
+    v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
 }
 
 /*Bool_t MyAnalysis::Cut() // cut() has been abandoned
@@ -74,10 +74,9 @@ void MyAnalysis::BookHistos()
     return true;
 }*/
 
-void MyAnalysis::Execute()
-{
-// This method gets called on every event.
-// In this example the momentum components are filled into histograms.
+void MyAnalysis::Execute(){
+    // This method gets called on every event.
+    // In this example the momentum components are filled into histograms.
 
 
     //equal functionality to cut() 
@@ -133,8 +132,6 @@ void MyAnalysis::Execute()
 
     //High and Low Mass Pair
         float M1, M2, MH, ML;
-        long count_neg=0 ,count_pos=0;
-
         //select B+ Decay
         if (H1_Charge+H2_Charge+H3_Charge == 1){
             //Choosing Mass Pair
@@ -172,7 +169,6 @@ void MyAnalysis::Execute()
         //fill
         h_H_M->Fill( MH );
         h_L_M->Fill( ML );
-    
     //TODO NEXT STEP 5.4
     }
 }
