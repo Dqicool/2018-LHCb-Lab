@@ -9,6 +9,10 @@
     },
     "files.associations": {
         "string": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "memory": "cpp",
+        "typeinfo": "cpp",
+        "exception": "cpp",
+        "cstdlib": "cpp"
     }
 }
