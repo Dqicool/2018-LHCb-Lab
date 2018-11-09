@@ -1,12 +1,11 @@
 {
     "files.exclude": {
+        ".vscode": true,
         "**/.gitattributes": true,
         "**/.gitignore": true,
-        "**/*.root": true,
         "**/LICENSE": true,
-        "**/README.md": true,
-        "**/Makefile":true,
-        ".vscode":true
+        "**/Makefile": true,
+        "**/README.md": true
     },
     "files.associations": {
         "string": "cpp"
