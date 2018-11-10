@@ -10,7 +10,6 @@
 #include <iostream>
 #include <stdlib.h>
 
-
 // This is the generic class doing the analysis For the real run you
 // have to create a derived class which defines the histograms, define
 // the BookHistos method which books them, and provide the Execute
@@ -23,47 +22,47 @@
 class Analysis {
 public:
     // Declaration of leaf types
-    Double_t         B_FlightDistance;
-    Double_t         B_VertexChi2;
-    Double_t         H1_PX;
-    Double_t         H1_PY;
-    Double_t         H1_PZ;
-    Double_t         H1_ProbK;
-    Double_t         H1_ProbPi;
-    Int_t            H1_Charge;
-    Double_t         H1_IPChi2;
-    Int_t            H1_isMuon;
-    Double_t         H2_PX;
-    Double_t         H2_PY;
-    Double_t         H2_PZ;
-    Double_t         H2_ProbK;
-    Double_t         H2_ProbPi;
-    Int_t            H2_Charge;
-    Double_t         H2_IPChi2;
-    Int_t            H2_isMuon;
-    Double_t         H3_PX;
-    Double_t         H3_PY;
-    Double_t         H3_PZ;
-    Double_t         H3_ProbK;
-    Double_t         H3_ProbPi;
-    Int_t            H3_Charge;
-    Double_t         H3_IPChi2;
-    Int_t            H3_isMuon;
+        Double_t         B_FlightDistance;
+        Double_t         B_VertexChi2;
+        Double_t         H1_PX;
+        Double_t         H1_PY;
+        Double_t         H1_PZ;
+        Double_t         H1_ProbK;
+        Double_t         H1_ProbPi;
+        Int_t            H1_Charge;
+        Double_t         H1_IPChi2;
+        Int_t            H1_isMuon;
+        Double_t         H2_PX;
+        Double_t         H2_PY;
+        Double_t         H2_PZ;
+        Double_t         H2_ProbK;
+        Double_t         H2_ProbPi;
+        Int_t            H2_Charge;
+        Double_t         H2_IPChi2;
+        Int_t            H2_isMuon;
+        Double_t         H3_PX;
+        Double_t         H3_PY;
+        Double_t         H3_PZ;
+        Double_t         H3_ProbK;
+        Double_t         H3_ProbPi;
+        Int_t            H3_Charge;
+        Double_t         H3_IPChi2;
+        Int_t            H3_isMuon;
 
     // tree and vector of histos
-    TChain         *myChain;
-    std::vector< TNamed* > v_Histos;
+        TChain         *myChain;
+        std::vector< TNamed* > v_Histos;
 
-    void     Init(TChain *chain, std::string choice);
-    Int_t    GetEntry(Long64_t entry);
-    void     Loop(int nevts = -1);
-    void     SaveHistos(const char*);
+        void     Init(TChain *chain, std::string choice);
+        Int_t    GetEntry(Long64_t entry);
+        void     Loop(int nevts = -1);
+        void     SaveHistos(const char*);
 
-    int      AnalysisMain(int argc, char* argv[]);    
+        int      AnalysisMain(int argc, char* argv[]);    
 
-    // These are pure virtual -- should be defined in real analysis child class
-    virtual void     BookHistos() = 0;
-    virtual void     Execute() = 0;
+        // These are pure virtual -- should be defined in real analysis child class
+        virtual void     BookHistos() = 0;
+        virtual void     Execute() = 0;
 };
 
 Int_t Analysis::GetEntry(Long64_t entry)
@@ -243,7 +242,6 @@ int Analysis::AnalysisMain(int argc, char* argv[])
         nevts = atoi( argv[2] );
         std::cout << "Setting number of output events to " << nevts << std::endl;
     }
-
     Init(chain, choice);
     Loop(nevts);
     SaveHistos(oname.c_str());

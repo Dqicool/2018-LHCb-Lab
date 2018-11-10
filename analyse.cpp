@@ -2,6 +2,7 @@
 #define C 1	            //Natural units for c
 #define M0K 493.667     //Mev
 #define M0Pi 139.570    //MeV
+#define M0D 1864.84     //MeV
 
 // This is the analysis class, which realises the generic Analysis
 // from Analysis.hpp
@@ -10,22 +11,24 @@
 class MyAnalysis : public Analysis {
 public:
     // Define your histograms here
-    TH1F       *h_PX;
-    TH1F       *h_PY;
-    TH1F       *h_PZ;
-    TH2F       *h_TXTY;
+    TH1F        *h_PX;
+    TH1F        *h_PY;
+    TH1F        *h_PZ;
+    TH2F        *h_TXTY;
 
-    TH1F       *h_H1Pi;
-    TH1F	   *h_H1Ka;
-    TH1F	   *h_H2Pi;
-    TH1F	   *h_H2Ka;
-    TH1F	   *h_H3Pi;
-    TH1F	   *h_H3Ka;
+    TH1F        *h_H1Pi;
+    TH1F	    *h_H1Ka;
+    TH1F	    *h_H2Pi;
+    TH1F	    *h_H2Ka;
+    TH1F	    *h_H3Pi;
+    TH1F	    *h_H3Ka;
     
-    TH1F	   *h_B_M0;
+    TH1F	    *h_B_M0_Pos;
+    TH1F        *h_B_M0_Neg;
     
-    TH1F	   *h_H_M;
-    TH1F	   *h_L_M;
+    TH1F	    *h_H_M;
+    TH1F	    *h_L_M;
+
 
     void     BookHistos();
 
@@ -56,10 +59,13 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 1000, 0, 1) );
     v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 1000, 0, 1) );
     //Invariant Mass of B
-    v_Histos.push_back(h_B_M0 =  new TH1F("h_B_M0",  "", 1000, 3.8e3, 6.2e3) );
+    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 1000, 3.8e3, 6.2e3) );
+    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 1000, 3.8e3, 6.2e3) );
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
+    //Charge distribution
+
 }
 
 /*Bool_t MyAnalysis::Cut() // cut() has been abandoned
@@ -80,12 +86,10 @@ void MyAnalysis::Execute(){
 
 
     //equal functionality to cut() 
-        if ( (H1_ProbPi < 0.85) || (H2_ProbPi < 0.85) || (H3_ProbPi < 0.85))
+        if ( (H1_ProbPi < 0.888) || (H2_ProbPi < 0.888) || (H3_ProbPi < 0.888))
             return;
         if ( H1_isMuon || H2_isMuon || H3_isMuon)
             return;
-        if ( H1_Charge + H2_Charge + H3_Charge != 1)
-            return; 
 
     // fill the momentum of all three particles 
         h_PX->Fill( H1_PX );
@@ -127,50 +131,64 @@ void MyAnalysis::Execute(){
         float abs_P_B = sqrt( pow(P_BX,2) + pow(P_BY,2) + pow(P_BZ,2));
         //Calculate the invariant mass of the B-meson
         float M0_B = sqrt(pow(E1+E2+E3,2)-pow(abs_P_B*C,2))/pow(C,2);
-        //Invariant Mass of B
-        h_B_M0->Fill( M0_B );
+        //Invariant Mass of B 
+        //h_B_M0->Fill( M0_B );//!Only fill when not D 
 
     //High and Low Mass Pair
         float M1, M2, MH, ML;
         //select B+ Decay
-        if (H1_Charge+H2_Charge+H3_Charge == 1){
-            //Choosing Mass Pair
-            if (H1_Charge == -1){
-                M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
-                M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
-            }
-            else if (H2_Charge == -1){
-                M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
-                M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
-            }
-            else if (H3_Charge == -1){
-                M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
-                M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
+        if (H1_Charge+H2_Charge+H3_Charge == 1)
+            {
+                //Choosing Mass Pair
+                if (H1_Charge == -1){
+                    M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
+                    M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
+                }
+                else if (H2_Charge == -1){
+                    M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
+                    M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
+                }
+                else if (H3_Charge == -1){
+                    M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
+                    M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
+                }
             }
         //select B- Decay
-        else if (H1_Charge+H2_Charge+H3_Charge == -1){
-            //Choosing Mass Pair
-            if (H1_Charge == 1){
-                M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
-                M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
+        else if (H1_Charge+H2_Charge+H3_Charge == -1)
+            {
+                //Choosing Mass Pair
+                if (H1_Charge == 1){
+                    M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
+                    M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
+                }
+                else if (H2_Charge == 1){
+                    M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
+                    M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
+                }
+                else if (H3_Charge == 1){
+                    M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
+                    M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
+                }
+                else
+                    std::cout<<"error: Charge= "<<H1_Charge+H2_Charge+H3_Charge<<std::endl;
             }
-            else if (H2_Charge == 1){
-                M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
-                M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
-            }
-            else if (H3_Charge == 1){
-                M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
-                M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
-            }
-        }
         //Decide Which one is Bigger
         if (M2 > M1){ MH = M2; ML = M1; }
         else        { MH = M1; ML = M2; }
-        //fill
-        h_H_M->Fill( MH );
-        h_L_M->Fill( ML );
+        //fill//!only fill not D
+        //h_H_M->Fill( MH );
+        //h_L_M->Fill( ML );
     //TODO NEXT STEP 5.4
-    }
+        //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
+        if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
+            if(H1_Charge+H2_Charge+H3_Charge == 1)
+                h_B_M0_Pos->Fill( M0_B );
+            else
+                h_B_M0_Neg->Fill( M0_B );
+            h_H_M->Fill( MH );
+            h_L_M->Fill( ML );
+        }
+
 }
 
 

@@ -14,5 +14,6 @@
         "typeinfo": "cpp",
         "exception": "cpp",
         "cstdlib": "cpp"
-    }
+    },
+    "files.autoSave": "afterDelay"
 }
