@@ -1,4 +1,11 @@
-#include "Analysis.hpp"
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include <TH1.h>
+#include <TH2.h>
+#include <TMath.h>
+#include<TF1.h>
+
 
 void drawOutput() {
 
@@ -9,7 +16,7 @@ void drawOutput() {
 		TFile *f1 = new TFile("Output/DataMagnetDown.root");
 		TFile *f2 = new TFile("Output/PhaseSpace.root");
 		TFile *f3 = new TFile("Output/DataAll.root");
-		TFile *f4 = new TFile("Output/DataMagnetDown.root");
+		TFile *f4 = new TFile("Output/DataMagnetUp.root");
 
     // Get pointers to the example histograms that were made 
 	// C1 C2
@@ -69,7 +76,7 @@ void drawOutput() {
 		H2Ka->Draw("same");
 		c4->SaveAs("Plots/C4_Particle2Prob.pdf");
     
-    // Repeat for particle 3
+	// Repeat for particle 3
 		TCanvas *c5= new TCanvas("c5","",600,400);
 		H3Pi->SetLineColor(kBlue);
 		H3Pi->GetXaxis()->SetTitle("Probability of Particle 3 State");
@@ -80,11 +87,11 @@ void drawOutput() {
     
     // Save plot of invariant mass for B meson
 		TCanvas *c6= new TCanvas("c6","",600,400);
-		hBM0P->SetLineColor(kBlue);
-		hBM0P->GetXaxis()->SetTitle("B-Meson Invariant Mass");
-		hBM0P->Draw();
-		hBM0N->SetLineColor(kRed);
-		hBM0N->Draw("same");
+		hBM0N->SetLineColor(kBlue);
+		hBM0N->GetXaxis()->SetTitle("B-Meson Invariant Mass");
+		hBM0N->Draw();
+		hBM0P->SetLineColor(kRed);
+		hBM0P->Draw("same");
 		c6->SaveAs("Plots/C6_B-MesonInvariantMass_final_pion.pdf");
 	
 	// Different mass of Pion Pair

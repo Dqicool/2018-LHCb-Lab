@@ -9,6 +9,7 @@
 #include <TMath.h>
 #include <iostream>
 #include <stdlib.h>
+#include <TF1.h>
 
 // This is the generic class doing the analysis For the real run you
 // have to create a derived class which defines the histograms, define

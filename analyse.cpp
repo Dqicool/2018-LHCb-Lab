@@ -59,8 +59,8 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 1000, 0, 1) );
     v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 1000, 0, 1) );
     //Invariant Mass of B
-    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 1000, 3.8e3, 6.2e3) );
-    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 1000, 3.8e3, 6.2e3) );
+    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 300, 3.8e3, 6.2e3) );
+    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 300, 3.8e3, 6.2e3) );
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );

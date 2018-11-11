@@ -13,7 +13,23 @@
         "memory": "cpp",
         "typeinfo": "cpp",
         "exception": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "tcanvas.h": "c",
+        "tf1.h": "c",
+        "tf1abscomposition.h": "c",
+        "ios": "cpp",
+        "__locale": "cpp",
+        "mutex": "cpp",
+        "__mutex_base": "cpp",
+        "chrono": "cpp",
+        "ctime": "cpp",
+        "tformula.h": "c",
+        "types.h": "c",
+        "veccore": "c",
+        "common.h": "c",
+        "simd.h": "c",
+        "tfile.h": "c",
+        "x86intrin.h": "c"
     },
     "files.autoSave": "afterDelay"
 }
