@@ -1,12 +1,11 @@
-#include "TH1.h"
-#include "TMath.h"
-#include "TF1.h"
-#include "TLegend.h"
-#include "TCanvas.h"
+#include <TMath.h>
+#include <TH1.h>
+#include <TF1.h>
 
 double_t Background(double_t *x, double_t *par)
 {
     return par[0] + par[1]*x[0] + par[2]*x[0]*x[0];
+    
 }
 
 double_t LorentzPeak(double_t *x, double_t *par)

@@ -1,11 +1,7 @@
-#include <TROOT.h>
-#include <TChain.h>
 #include <TFile.h>
 #include <TH1.h>
 #include <TH2.h>
-#include <TMath.h>
-#include<TF1.h>
-
+#include <TCanvas.h>
 
 void drawOutput() {
 

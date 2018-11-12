@@ -1,27 +1,19 @@
 #ifndef _ANALYSIS_HPP
 #define _ANALYSIS_HPP
 
-#include <TROOT.h>
-#include <TChain.h>
-#include <TFile.h>
-#include <TH1.h>
-#include <TH2.h>
-#include <TMath.h>
 #include <iostream>
-#include <stdlib.h>
-#include <TF1.h>
+#include <cstdlib>
+#include "TROOT.h"
+#include "TChain.h"
+#include "TFile.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TMath.h"
+#include "TF1.h"
 
-// This is the generic class doing the analysis For the real run you
-// have to create a derived class which defines the histograms, define
-// the BookHistos method which books them, and provide the Execute
-// method which will be called for each event in the data sample.
-//
-// Then the analysis can be fully done using the AnalysisMain function
-// defined in teh end of the file.
-//
-// See the example of usage in analyse.cpp
+
 class Analysis {
-public:
+    public:
     // Declaration of leaf types
         Double_t         B_FlightDistance;
         Double_t         B_VertexChi2;
@@ -108,6 +100,7 @@ void Analysis::Init(TChain *chain, std::string choice)
     myChain->SetBranchAddress("H3_PX", &H3_PX);
     myChain->SetBranchAddress("H3_PY", &H3_PY);
     myChain->SetBranchAddress("H3_PZ", &H3_PZ);
+    
     if ( "PhaseSpace" == choice ) {
 	// some variables don't exist, so set them to default values
 	    B_FlightDistance = 0.;
@@ -189,8 +182,6 @@ void Analysis::Loop(int nevts)
     }
 }
 
-
-
 int Analysis::AnalysisMain(int argc, char* argv[])
 {
     // setting analysis type and configuring input data
@@ -250,4 +241,4 @@ int Analysis::AnalysisMain(int argc, char* argv[])
     return 0;
 }
 
-#endif /* _ANALYSIS_HPP */
+#endif

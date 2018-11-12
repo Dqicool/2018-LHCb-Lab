@@ -1,6 +1,5 @@
 #include"Analysis.hpp"
 
-
 Double_t fitf(Double_t *x,Double_t *par) 
 {
     Double_t arg = 0;
