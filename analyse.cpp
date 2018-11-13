@@ -1,3 +1,4 @@
+
 #include "Analysis.hpp"
 #define C 1	            //Natural units for c
 #define M0K 493.667     //Mev
@@ -15,6 +16,7 @@ public:
     TH1F        *h_PY;
     TH1F        *h_PZ;
     TH2F        *h_TXTY;
+    TH1F *a,*b,*c,*d,*e;
 
     TH1F        *h_H1Pi;
     TH1F	    *h_H1Ka;
@@ -51,6 +53,12 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back( h_PY   = new TH1F("h_PY",  "", 1000, -1e4, 1e4) );
     v_Histos.push_back( h_PZ   = new TH1F("h_PZ",  "", 1000, -1e5, 1e5) );
     v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 1000, -1,1, 100,-1, 1) );
+    v_Histos.push_back( a = new TH1F("a", "",1000,0,100));
+    v_Histos.push_back( b = new TH1F("b", "",1000,0,100));
+    v_Histos.push_back( c = new TH1F("c", "",1000,0,100));
+    v_Histos.push_back( d = new TH1F("d", "",1000,0,100));
+    v_Histos.push_back( e = new TH1F("e", "",1000,0,100));
+
     //Pion Kaon Possibility
     v_Histos.push_back(h_H1Pi = new TH1F("h_H1Pi","", 1000, 0, 1) );
     v_Histos.push_back(h_H1Ka = new TH1F("h_H1Ka","", 1000, 0, 1) );
@@ -90,7 +98,14 @@ void MyAnalysis::Execute(){
             return;
         if ( H1_isMuon || H2_isMuon || H3_isMuon)
             return;
-
+        //if (H1_ProbPi<H1_ProbK || H2_ProbPi<H2_ProbK||H3_ProbPi<H3_ProbK)
+        //    return;
+    // fill abcde
+        a->Fill(B_FlightDistance);
+        b->Fill(B_VertexChi2);
+        c->Fill(H1_IPChi2);
+        d->Fill(H2_IPChi2);
+        e->Fill(H3_IPChi2);
     // fill the momentum of all three particles 
         h_PX->Fill( H1_PX );
         h_PX->Fill( H2_PX );
