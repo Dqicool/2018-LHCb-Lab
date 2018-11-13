@@ -1,9 +1,9 @@
 
 #include "Analysis.hpp"
 #define C 1	            //Natural units for c
-#define M0K 493.667     //Mev
+#define M0K  493.667     //Mev
 #define M0Pi 139.570    //MeV
-#define M0D 1864.84     //MeV
+#define M0D  1864.84     //MeV
 
 // This is the analysis class, which realises the generic Analysis
 // from Analysis.hpp
@@ -67,8 +67,8 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 1000, 0, 1) );
     v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 1000, 0, 1) );
     //Invariant Mass of B
-    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 300, 3.8e3, 6.2e3) );
-    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 300, 3.8e3, 6.2e3) );
+    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 100, 5.11e3, 5.5e3) );
+    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 100, 5.11e3, 5.5e3) );
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
@@ -196,10 +196,10 @@ void MyAnalysis::Execute(){
     //TODO NEXT STEP 5.4
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
         if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
-            if(H1_Charge+H2_Charge+H3_Charge == 1)
-                h_B_M0_Pos->Fill( M0_B );
-            else
-                h_B_M0_Neg->Fill( M0_B );
+            if(H1_Charge+H2_Charge+H3_Charge == 1){
+                h_B_M0_Pos->Fill( M0_B );}
+            else{
+                h_B_M0_Neg->Fill( M0_B );}
             h_H_M->Fill( MH );
             h_L_M->Fill( ML );
         }
