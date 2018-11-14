@@ -5,7 +5,8 @@
         "**/.gitignore": true,
         "**/LICENSE": true,
         "**/Makefile": true,
-        "**/README.md": true
+        "**/README.md": true,
+        "connectLab.sh": true
     },
     "files.associations": {
         "string": "cpp",

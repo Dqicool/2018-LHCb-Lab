@@ -62,17 +62,9 @@ using namespace std;
     {
         return ErrAPlusB(ErrA,ErrB);
     }
-    Double_t ErrAMultB(Double_t A, Double_t B, Double_t ErrA, Double_t ErrB)
+    Double_t ErrAMultB(Double_t C , Double_t A, Double_t B, Double_t ErrA, Double_t ErrB)
     {
-        Double_t f2 = pow(A*B,2);
-        Double_t AErrA2 = pow(ErrA/A,2);
-        Double_t BErrB2 = pow(ErrB/B,2);
-        Double_t Err2 = f2*(AErrA2+BErrB2);
-        return sqrt(Err2);
-    }
-    Double_t ErrADeviB(Double_t A, Double_t B, Double_t ErrA, Double_t ErrB)
-    {
-        Double_t f2 = pow(A/B,2);
+        Double_t f2 = pow(C,2);
         Double_t AErrA2 = pow(ErrA/A,2);
         Double_t BErrB2 = pow(ErrB/B,2);
         Double_t Err2 = f2*(AErrA2+BErrB2);
@@ -184,14 +176,24 @@ void fittingData(){
         Double_t NPos = parPos[0]*parPos[1]*TMath::Pi();
         Double_t NNeg = parNeg[0]*parNeg[1]*TMath::Pi();
         Double_t Asym = (NNeg-NPos)/(NNeg+NPos);
-        Double_t ErrNPos = TMath::Pi()*ErrAMultB(parPos[0], parPos[1],ErrPosI, ErrPosGamma);
-        Double_t ErrNNeg = TMath::Pi()*ErrAMultB(parNeg[0], parNeg[1],ErrNegI, ErrNegGamma);
+        Double_t ErrNPos = ErrAMultB(NPos,parPos[0], parPos[1],ErrPosI, ErrPosGamma);
+        Double_t ErrNNeg = ErrAMultB(NNeg,parNeg[0], parNeg[1],ErrNegI, ErrNegGamma);
         Double_t ErrN    = ErrAPlusB(ErrNPos, ErrNNeg);
-        Double_t ErrA    = ErrADeviB(NNeg-NPos, NNeg+NPos, ErrN, ErrN);
+        Double_t EffPos  = NPos/(NPos+NNeg);
+        Double_t EffNeg  = NNeg/(NPos+NNeg);
+        Double_t ErrEffPos = ErrAMultB(EffPos,NPos, NPos+NNeg, ErrNPos,ErrN);
+        Double_t ErrEffNeg = ErrAMultB(EffNeg,NNeg, NPos+NNeg, ErrNNeg,ErrN);
+        Double_t ErrA      = ErrAMinuB(ErrEffNeg, ErrEffPos);
+
+        ErrA = ErrAMultB(Asym, NNeg-NPos, NNeg+NPos, ErrN, ErrN);
     //Output
-        cout<<"\n\nGlobal Asymmytry is \t"<<Asym<<endl;
-        cout<<" Asymmytry Error is \t"<<ErrA<<endl;
-        cout<<" Predicted Error is \t"<<sqrt((1-Asym*Asym)/(NNeg+NPos))<<endl;
+
+        cout<<"Number of B+  =\t"<<NPos<<" +- "<<ErrNPos<<endl;
+        cout<<"Number of B-  =\t"<<NNeg<<" +- "<<ErrNNeg<<endl;
+        cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
+        cout<<"Efficiency N- =\t"<<EffNeg<<" +- "<<ErrEffNeg<<endl;
+        cout<<"Global Asymme =\t"<<Asym<<" +- "<<ErrA<<endl;
+        cout<<"Predicted Error =\t"<<sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
 }
 
 
