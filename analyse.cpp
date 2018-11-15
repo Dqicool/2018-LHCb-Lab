@@ -67,8 +67,8 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_H3Pi = new TH1F("h_H3Pi","", 1000, 0, 1) );
     v_Histos.push_back(h_H3Ka = new TH1F("h_H3Ka","", 1000, 0, 1) );
     //Invariant Mass of B
-    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 228, 5.11e3, 6e3) );
-    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 228, 5.11e3, 6e3) );
+    v_Histos.push_back(h_B_M0_Pos =  new TH1F("h_B_M0_Pos",  "", 250, 5e3, 6e3) );
+    v_Histos.push_back(h_B_M0_Neg =  new TH1F("h_B_M0_Neg",  "", 250, 5e3, 6e3) );
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
@@ -94,7 +94,7 @@ void MyAnalysis::Execute(){
 
 
     //equal functionality to cut() 
-        if ( (H1_ProbPi < 0.888) || (H2_ProbPi < 0.888) || (H3_ProbPi < 0.888))
+        if ( (H1_ProbPi < 0.843) || (H2_ProbPi < 0.843) || (H3_ProbPi < 0.843))
             return;
         if ( H1_isMuon || H2_isMuon || H3_isMuon)
             return;

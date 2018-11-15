@@ -23,14 +23,14 @@
         //#define SHOULDER_ARGUS
         //#define SHOULDER_LORENTZ
 
-        //3.A because double Gauss and Cruijff are the same but Alpha
+        //3.1.A because double Gauss and Cruijff are the same but Alpha
             #ifdef SIGNAL_DOUBLE_GAUS
             #define SIGNAL_CRUIJFF
             #endif
     //choosing data file
         //#define DATA_UP
-        #define DATA_DOWN
-        //#define DATA_ALL
+        //#define DATA_DOWN
+        #define DATA_ALL
 
 //4 Quantity of Parameters
     #define NUM_PAR_BAC 2
@@ -313,18 +313,18 @@
 
     //7.7 Error Calculating
         #ifdef SIGNAL_LORENTZ
-            Double_t NPos = parPos[0]*parPos[1]*TMath::Pi();
-            Double_t NNeg = parNeg[0]*parNeg[1]*TMath::Pi();
-            Double_t ErrNPos = ErrAMultB(NPos,parPos[0], parPos[1],errPos[0], errPos[1]);
-            Double_t ErrNNeg = ErrAMultB(NNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1]);
+            Double_t NPos = parPos[0]*parPos[1]*TMath::Pi()/4;
+            Double_t NNeg = parNeg[0]*parNeg[1]*TMath::Pi()/4;
+            Double_t ErrNPos = ErrAMultB(NPos,parPos[0], parPos[1],errPos[0], errPos[1])/4;
+            Double_t ErrNNeg = ErrAMultB(NNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1])/4;
         #endif
 
         #ifdef SIGNAL_CRUIJFF
             #ifdef SIGNAL_DOUBLE_GAUS
-                Double_t NPos = SigPos->Integral(LIML,LIMH);
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH);
-                Double_t ANPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2;
-                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2;
+                Double_t NPos = SigPos->Integral(LIML,LIMH)/4;
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/4;
+                Double_t ANPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/4;
+                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/4;
                 cout<<NPos<<'\t'<<ANPos<<endl;
                 cout<<NNeg<<'\t'<<ANNeg<<endl;
                 Double_t ErrSigPos = ErrAPlusB(errPos[1],errPos[3]);
@@ -339,10 +339,10 @@
                 Double_t NNeg = SigNeg->Integral(LIML,LIMH);
                 Double_t ErrNPos = SigPos->IntegralError(LIML,LIMH);//, parPos, posPtr->GetCovarianceMatrix()->GetMatrixArray());
                 Double_t ErrNNeg = SigNeg->IntegralError(LIML,LIMH);//, parNeg, negPtr->GetCovarianceMatrix()->GetMatrixArray());*/
-                Double_t NPos = SigPos->Integral(LIML,LIMH);
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH);
-                Double_t ANPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2;
-                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2;
+                Double_t NPos = SigPos->Integral(LIML,LIMH)/4;
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/4;
+                Double_t ANPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/4;
+                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/4;
                 cout<<NPos<<'\t'<<ANPos<<endl;
                 cout<<NNeg<<'\t'<<ANNeg<<endl;
                 Double_t ErrSigPos = ErrAPlusB(errPos[1],errPos[3]);
