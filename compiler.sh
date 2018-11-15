@@ -5,3 +5,4 @@ make
 ./analyse DataMagnetDown
 ./analyse DataMagnetUp
 ./analyse PhaseSpace
+

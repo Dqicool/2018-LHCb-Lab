@@ -35,6 +35,13 @@ void DalitzPlots(){
                 TH2F *DalitzBac = (TH2F*) f->Get("h_Dalitz_Bac");
                 TH2F *DalitzSig = (TH2F*) DalitzCom->Clone("DalitSig");
                 DalitzSig->Add(DalitzBac,-1);
+                //!Set All Minus Bins To 0 
+                for(int i = 0; i<100; i++){
+                    for( int j=0;j<100;j++){
+                        DalitzSig->SetBinContent(i,j,DalitzSig->GetBinContent(i,j)<0?0:DalitzSig->GetBinContent(i,j));
+                    }
+                }
+                    
             #endif
             #ifdef DATA_DOWN
                 TFile *f = new TFile("Output/DataMagnetDown.root");

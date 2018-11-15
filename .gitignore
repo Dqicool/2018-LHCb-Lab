@@ -47,3 +47,4 @@ Software/outputDataMagnetDown.root
 .DS_Store
 .DS_Store
 connectLab.sh
+compiler.sh
