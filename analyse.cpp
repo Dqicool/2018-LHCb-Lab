@@ -26,10 +26,12 @@ public:
     TH1F	    *h_H3Ka;
     
     TH1F	    *h_B_M0_Pos;
-    TH1F        *h_B_M0_Neg;
+    TH1F            *h_B_M0_Neg;
     
     TH1F	    *h_H_M;
     TH1F	    *h_L_M;
+    
+    TH2F	    *h_Dalitz;
 
 
     void     BookHistos();
@@ -52,7 +54,7 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back( h_PX   = new TH1F("h_PX",  "", 1000, -1e4, 1e4) );
     v_Histos.push_back( h_PY   = new TH1F("h_PY",  "", 1000, -1e4, 1e4) );
     v_Histos.push_back( h_PZ   = new TH1F("h_PZ",  "", 1000, -1e5, 1e5) );
-    v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 1000, -1,1, 100,-1, 1) );
+    v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 1000, -1,1, 1000,-1, 1) );
     v_Histos.push_back( a = new TH1F("a", "",1000,0,100));
     v_Histos.push_back( b = new TH1F("b", "",1000,0,100));
     v_Histos.push_back( c = new TH1F("c", "",1000,0,100));
@@ -72,6 +74,8 @@ void MyAnalysis::BookHistos()
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
+    //Dalitz mass data
+    v_Histos.push_back(h_Dalitz = new TH2F("h_Dalitz","",1000, -1, 36,1000,-1,36));
     //Charge distribution
 
 }
@@ -191,17 +195,15 @@ void MyAnalysis::Execute(){
         if (M2 > M1){ MH = M2; ML = M1; }
         else        { MH = M1; ML = M2; }
         //fill//!only fill not D
-        //h_H_M->Fill( MH );
-        //h_L_M->Fill( ML );
-    //TODO NEXT STEP 5.4
+            h_H_M->Fill( MH );
+            h_L_M->Fill( ML );
+	        h_Dalitz->Fill(M1*M1/1e6,M2*M2/1e6);
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
         if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
             if(H1_Charge+H2_Charge+H3_Charge == 1){
                 h_B_M0_Pos->Fill( M0_B );}
             else{
                 h_B_M0_Neg->Fill( M0_B );}
-            h_H_M->Fill( MH );
-            h_L_M->Fill( ML );
         }
 
 }

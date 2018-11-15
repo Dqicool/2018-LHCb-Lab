@@ -107,17 +107,17 @@ void Analysis::Init(TChain *chain, std::string choice)
         B_VertexChi2 = 0.;
         H1_ProbK = 0.;
         H1_ProbPi = 1;
-        H1_Charge = 0;
+        H1_Charge = 1;
         H1_IPChi2 = 0.;
         H1_isMuon = 0;
         H2_ProbK = 0.;
-        H2_ProbPi = 0.;
-        H2_Charge = 0;
+        H2_ProbPi = 1.;
+        H2_Charge = 1;
         H2_IPChi2 = 0.;
         H2_isMuon = 0;
         H3_ProbK = 0.;
-        H3_ProbPi = 0.;
-        H3_Charge = 0;
+        H3_ProbPi = 1.;
+        H3_Charge = -1;
         H3_IPChi2 = 0.;
         H3_isMuon = 0;
     }
