@@ -9,10 +9,10 @@
     #include <iostream>
     using namespace std;
 // Define Data Choice
-    #define DATA_ALL
+    //#define DATA_ALL
     //#define DATA_UP
     //#define DATA_DOWN
-    //#define DATA_PHASE_SPACE
+    #define DATA_PHASE_SPACE
 
 void DalitzPlots(){
         //7.2 declare Data choice
@@ -47,8 +47,8 @@ void DalitzPlots(){
             #endif
 //7.3 
 
-
+TCanvas *c10 = new TCanvas("c10","",600,600);
 Dalitz->Draw("colz");
-Dalitz->SaveAs("Plots/DalitzPlot.pdf");
+c10->SaveAs("Plots/c10_DalitzPlot.pdf");
 
 }
