@@ -4,6 +4,7 @@
 #define M0K  493.667     //Mev
 #define M0Pi 139.570    //MeV
 #define M0D  1864.84     //MeV
+#define M0B  5279.29     //Mev
 
 // This is the analysis class, which realises the generic Analysis
 // from Analysis.hpp
@@ -76,7 +77,6 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
     //Dalitz mass data
     v_Histos.push_back(h_Dalitz = new TH2F("h_Dalitz","",1000, -1, 36,1000,-1,36));
-    //Charge distribution
 
 }
 
@@ -194,9 +194,8 @@ void MyAnalysis::Execute(){
         //Decide Which one is Bigger
         if (M2 > M1){ MH = M2; ML = M1; }
         else        { MH = M1; ML = M2; }
-        //fill//!only fill not D
-            h_H_M->Fill( MH );
-            h_L_M->Fill( ML );
+        //fill
+        if (pow(M0_B-M0B,2)< 1e4)
 	        h_Dalitz->Fill(M1*M1/1e6,M2*M2/1e6);
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
         if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
@@ -204,6 +203,8 @@ void MyAnalysis::Execute(){
                 h_B_M0_Pos->Fill( M0_B );}
             else{
                 h_B_M0_Neg->Fill( M0_B );}
+            h_H_M->Fill( MH );
+            h_L_M->Fill( ML );
         }
 
 }

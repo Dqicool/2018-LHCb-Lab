@@ -9,10 +9,10 @@
     #include <iostream>
     using namespace std;
 // Define Data Choice
-    //#define DATA_ALL
+    #define DATA_ALL
     //#define DATA_UP
     //#define DATA_DOWN
-    #define DATA_PHASE_SPACE
+    //#define DATA_PHASE_SPACE
 
 void DalitzPlots(){
         //7.2 declare Data choice
