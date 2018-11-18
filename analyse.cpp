@@ -142,23 +142,22 @@ void MyAnalysis::Execute(){
     
     //Invariant Mass of B
         //Calculate total momentum for each decay particle
-        float P1 = sqrt( pow(H1_PX,2) + pow(H1_PY,2) + pow(H1_PZ,2));
-        float P2 = sqrt( pow(H2_PX,2) + pow(H2_PY,2) + pow(H2_PZ,2));
-        float P3 = sqrt( pow(H3_PX,2) + pow(H3_PY,2) + pow(H3_PZ,2));
+        float P1 = TMath::Sqrt( pow(H1_PX,2) + pow(H1_PY,2) + pow(H1_PZ,2));
+        float P2 = TMath::Sqrt( pow(H2_PX,2) + pow(H2_PY,2) + pow(H2_PZ,2));
+        float P3 = TMath::Sqrt( pow(H3_PX,2) + pow(H3_PY,2) + pow(H3_PZ,2));
         //Calculate total energy for each decay particle using known invariant mass
-        float E1 = sqrt(pow(P1*C,2) + pow(M0Pi*C*C,2));
-        float E2 = sqrt(pow(P2*C,2) + pow(M0Pi*C*C,2));
-        float E3 = sqrt(pow(P3*C,2) + pow(M0Pi*C*C,2));
+        float E1 = TMath::Sqrt(pow(P1*C,2) + pow(M0Pi*C*C,2));
+        float E2 = TMath::Sqrt(pow(P2*C,2) + pow(M0Pi*C*C,2));
+        float E3 = TMath::Sqrt(pow(P3*C,2) + pow(M0Pi*C*C,2));
         //Calculate the x, y, z components of the B-meson momentum 
         float P_BX = H1_PX+H2_PX+H3_PX;
         float P_BY = H1_PY+H2_PY+H3_PY;
         float P_BZ = H1_PZ+H2_PZ+H3_PZ;
         //Calculate the B-meson absolute momentum
-        float abs_P_B = sqrt( pow(P_BX,2) + pow(P_BY,2) + pow(P_BZ,2));
+        float abs_P_B = TMath::Sqrt( pow(P_BX,2) + pow(P_BY,2) + pow(P_BZ,2));
         //Calculate the invariant mass of the B-meson
-        float M0_B = sqrt(pow(E1+E2+E3,2)-pow(abs_P_B*C,2))/pow(C,2);
+        float M0_B = TMath::Sqrt(pow(E1+E2+E3,2)-pow(abs_P_B*C,2))/pow(C,2);
         //Invariant Mass of B 
-        //h_B_M0->Fill( M0_B );//!Only fill when not D 
 
     //High and Low Mass Pair
         float M1, M2, MH, ML;
@@ -167,22 +166,22 @@ void MyAnalysis::Execute(){
             {
                 //Choosing Mass Pair
                 if (H1_Charge == -1){
-                    M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
-                    M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
                 }
                 else if (H2_Charge == -1){
-                    M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
-                    M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
                 }
                 else if (H3_Charge == -1){
-                    M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
-                    M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
                 }
                 if (M2 > M1){ MH = M2; ML = M1; }
                 else        { MH = M1; ML = M2; }
                 if (pow(M0_B-M0B,2) < 1e4)
 	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
-                if(M0_B >5400 && M0_B<5600)
+                if(M0_B >5400 && M0_B<6000)
                     h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
             }
             
@@ -191,22 +190,22 @@ void MyAnalysis::Execute(){
             {
                 //Choosing Mass Pair
                 if (H1_Charge == 1){
-                    M1 = sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
-                    M2 = sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E1+E2,2)-(pow(H1_PX + H2_PX,2)+pow(H1_PY + H2_PY,2)+pow(H1_PZ + H2_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E1+E3,2)-(pow(H1_PX + H3_PX,2)+pow(H1_PY + H3_PY,2)+pow(H1_PZ + H3_PZ,2)));
                 }
                 else if (H2_Charge == 1){
-                    M1 = sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
-                    M2 = sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E2+E1,2)-(pow(H2_PX + H1_PX,2)+pow(H2_PY + H1_PY,2)+pow(H2_PZ + H1_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E2+E3,2)-(pow(H2_PX + H3_PX,2)+pow(H2_PY + H3_PY,2)+pow(H2_PZ + H3_PZ,2)));
                 }
                 else if (H3_Charge == 1){
-                    M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
-                    M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
+                    M1 = TMath::Sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
+                    M2 = TMath::Sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
                 }
                 if (M2 > M1){ MH = M2; ML = M1; }
                 else        { MH = M1; ML = M2; }
                 if (pow(M0_B-M0B,2) < 1e4)
 	                h_Dalitz_Neg_Com->Fill(ML*ML/1e6,MH*MH/1e6);
-                if(M0_B >5400 && M0_B<5600)
+                if(M0_B >5400 && M0_B<6000)
                     h_Dalitz_Neg_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
             }
 

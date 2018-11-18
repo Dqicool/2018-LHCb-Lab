@@ -64,7 +64,7 @@
     //5.2 SHOULDER FUNCTION
         Double_t Shoulder(Double_t *x, Double_t *par){
             #ifdef SHOULDER_GAUS
-            return par[0] * exp(-0.5 * pow((x[0] - par[1]) / par[2], 2));
+            return par[0] * TMath::Exp(-0.5 * pow((x[0] - par[1]) / par[2], 2));
             #endif
 
             #ifdef SHOULDER_LORENTZ
@@ -97,7 +97,7 @@
     Double_t ErrAPlusB(Double_t ErrA, Double_t ErrB)
     {
         Double_t Err2 = pow(ErrA,2)+pow(ErrB,2); 
-        return sqrt(Err2);
+        return TMath::Sqrt(Err2);
     }
     Double_t ErrAMinuB(Double_t ErrA, Double_t ErrB)
     {
@@ -109,7 +109,7 @@
         Double_t AErrA2 = pow(ErrA/A,2);
         Double_t BErrB2 = pow(ErrB/B,2);
         Double_t Err2 = f2*(AErrA2+BErrB2);
-        return sqrt(Err2);
+        return TMath::Sqrt(Err2);
     }
 
 //7 main function
@@ -377,7 +377,7 @@
         cout<<"Effi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
         ErrA = ErrAMultB(Asym, NNeg-NPos, NNeg+NPos, ErrN, ErrN);
         cout<<"Devi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
-        cout<<"Predicted Error =\t"<<sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
+        cout<<"Predicted Error =\t"<<TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
         cout<<"\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
         cout<<"**********************************************************************\n\n"<<endl;
