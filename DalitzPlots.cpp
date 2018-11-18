@@ -153,10 +153,7 @@
                 c16->SaveAs("Plots/c16_Local_Assymmytry.pdf");
 
                 TCanvas *c17 = new TCanvas("c17","",CANVASIZE,CANVASIZE);
-                ASSY->SetAxisRange(-1,1,"Z");
                 NumMinus->Draw("colz1");
-                ASSY->Draw("TEXT SAME");
-                ASSY->SetBarOffset(0.2);
                 NumMinus->SetBarOffset(-0.2);
                 NumMinus->Draw("SAME TEXT ");
                 c17->SaveAs("Plots/c17_Local_ABS_Assymmytry.pdf");
