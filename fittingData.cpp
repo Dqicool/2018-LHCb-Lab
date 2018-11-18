@@ -29,8 +29,8 @@
             #ifdef SIGNAL_DOUBLE_GAUS
             #define SIGNAL_CRUIJFF
             #endif
-    //choosing data file
-        //#define DATA_UP
+    //3.2 choosing data file
+        // #define DATA_UP
         //#define DATA_DOWN
         #define DATA_ALL
 
@@ -114,8 +114,11 @@
 
 //7 main function
     void fittingData(){
-    //7 Declaration
-        //7.1 declare fitting function
+    //7.1 Declaration
+        cout<<"\n\n**********************************************************************"<<endl;
+        cout<<"**********************************************************************"<<endl;
+        cout<<"**********************************************************************\n"<<endl;
+        //7.1.1 declare fitting function
             #ifdef BACKG_EXP
                 cout<<"BackGround fitting method :\tExp"<<endl;
             #endif
@@ -127,7 +130,7 @@
                 #endif
             #endif
             #ifdef SIGNAL_LORENTZ
-                cout<<"Signal fitting method :\tLorentz Peak"<<endl;
+                cout<<"Signal fitting method :\t\tLorentz Peak"<<endl;
             #endif
             #ifdef SHOULDER_GAUS
                 cout<<"Shoulder fitting method :\tGaussian"<<endl;
@@ -138,7 +141,7 @@
             #ifdef SHOULDER_LORENTZ
                 cout<<"Shoulder fitting method :\tLorentz"<<endl;
             #endif
-        //7.2 declare Data choice
+        //7.1.2 declare Data choice
             #ifdef DATA_ALL
                 cout<<"Using all Data"<<endl;
             #endif
@@ -148,7 +151,7 @@
             #ifdef DATA_DOWN
                 cout<<"Using Magnet Down Data"<<endl;
             #endif
-        //7.3 load chosen Data from file
+        //7.1.3 load chosen Data from file
             #ifdef DATA_ALL
                 TFile *f = new TFile("Output/DataAll.root");
                 TH1F *B0Pos = (TH1F*) f->Get("h_B_M0_Pos");
@@ -166,64 +169,64 @@
             #endif
 
 
-        //7.4 Set up fitting object
-        //7.4.1 create Pos fitting obj
+        //7.1.4 Set up fitting object
+        //7.1.4.1 create Pos fitting obj
             TF1 *ComPos =      new TF1("ComPos",   Combine,    LIML, LIMH, NUM_PAR);
-        //7.4.2 Configure fitting parametres
-            //Background
-                #ifdef BACKG_EXP
-                    ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO, "BackGr A");
-                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, -1.26e-3);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO, -1,0);
+    //7.2 Configure fitting parametres
+        //Background
+            #ifdef BACKG_EXP
+                ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO, "BackGr A");
+                ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, -1.26e-3);
+                ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO, -1,0);
 
-                    ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1, "BackGr B");
-                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 10);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1, 0,20);
+                ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1, "BackGr B");
+                ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 10);
+                ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1, 0,20);
+            #endif
+        //Signal
+            #ifdef SIGNAL_LORENTZ 
+                ComPos->SetParName(0,"Signal I");
+                ComPos->SetParameter(0, 90);
+                ComPos->SetParLimits(0,0,200);
+
+                ComPos->SetParName(1,"Signal Gam");
+                ComPos->SetParameter(1, 50);
+                ComPos->SetParLimits(1,0,200);
+
+                ComPos->SetParName(2,"Signal x0");
+                ComPos->SetParameter(2, 5.28e3);
+                ComPos->SetParLimits(2,5200,5400);
+            #endif
+            #ifdef SIGNAL_CRUIJFF 
+                ComPos->SetParName(0, "Signal x0");
+                ComPos->SetParameter(0, 5200);
+                ComPos->SetParLimits(0,5200,5400);
+
+                ComPos->SetParName(1, "Signal SigL");
+                ComPos->SetParameter(1, 50);
+                ComPos->SetParLimits(1,0,100);
+
+                ComPos->SetParName(2, "Signal AlpL");
+                ComPos->SetParameter(2, 0);
+                ComPos->SetParLimits(2,0,1);
+                
+                ComPos->SetParName(3, "Signal SigR");
+                ComPos->SetParameter(3, 50);
+                ComPos->SetParLimits(3,0,100);
+                
+                ComPos->SetParName(4, "Signal AlpR");
+                ComPos->SetParameter(4, 0);
+                ComPos->SetParLimits(4,0,1);
+                
+                ComPos->SetParName(5, "Signal I");
+                ComPos->SetParameter(5, 60);
+                ComPos->SetParLimits(5,0,150);
+
+                #ifdef SIGNAL_DOUBLE_GAUS
+                ComPos->FixParameter(2,0);
+                ComPos->FixParameter(4,0);
                 #endif
-            //Signal
-                #ifdef SIGNAL_LORENTZ 
-                    ComPos->SetParName(0,"Signal I");
-                    ComPos->SetParameter(0, 90);
-                    ComPos->SetParLimits(0,0,200);
-
-                    ComPos->SetParName(1,"Signal Gam");
-                    ComPos->SetParameter(1, 50);
-                    ComPos->SetParLimits(1,0,200);
-
-                    ComPos->SetParName(2,"Signal x0");
-                    ComPos->SetParameter(2, 5.28e3);
-                    ComPos->SetParLimits(2,5200,5400);
-                #endif
-                #ifdef SIGNAL_CRUIJFF 
-                    ComPos->SetParName(0, "Signal x0");
-                    ComPos->SetParameter(0, 5200);
-                    ComPos->SetParLimits(0,5200,5400);
-
-                    ComPos->SetParName(1, "Signal SigL");
-                    ComPos->SetParameter(1, 50);
-                    ComPos->SetParLimits(1,0,100);
-
-                    ComPos->SetParName(2, "Signal AlpL");
-                    ComPos->SetParameter(2, 0);
-                    ComPos->SetParLimits(2,0,1);
-                    
-                    ComPos->SetParName(3, "Signal SigR");
-                    ComPos->SetParameter(3, 50);
-                    ComPos->SetParLimits(3,0,100);
-                    
-                    ComPos->SetParName(4, "Signal AlpR");
-                    ComPos->SetParameter(4, 0);
-                    ComPos->SetParLimits(4,0,1);
-                    
-                    ComPos->SetParName(5, "Signal I");
-                    ComPos->SetParameter(5, 60);
-                    ComPos->SetParLimits(5,0,150);
-
-                    #ifdef SIGNAL_DOUBLE_GAUS
-                    ComPos->FixParameter(2,0);
-                    ComPos->FixParameter(4,0);
-                    #endif
-                #endif
+            #endif
             //Shoulder
                 #ifdef SHOULDER_LORENTZ
                     ComPos->SetParName(NUM_PAR_SIG,"SHOULD I");
@@ -257,7 +260,8 @@
         //7.4.3 Create Neg fitting obj
             TF1 *ComNeg = ComPos;
             ComNeg->SetName("ComNeg");
-    //7.5 fitting Postive 
+    //7.3 fitting Postive 
+        cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
         TCanvas *c8 = new TCanvas("c8","",600,400);
         B0Pos->SetAxisRange(0,LIMZ,"Y");
         TFitResultPtr posPtr = B0Pos->Fit(ComPos,"RS");
@@ -284,7 +288,8 @@
 
         c8->SaveAs("Plots/c8_Background&SignalFitsPos.pdf");
 
-    //7.6 fitting Negtive
+    //7.4 fitting Negtive
+        cout<<"\n*******************************NEGTIVE*******************************\n"<<endl;
         TCanvas *c9 = new TCanvas("c9","",600,400);
         B0Neg->SetAxisRange(0,LIMZ,"Y");
         TFitResultPtr negPtr = B0Neg->Fit(ComNeg,"R");
@@ -313,7 +318,7 @@
 
         c9->SaveAs("Plots/c9_Background&SignalFitsNeg.pdf");
 
-    //7.7 Error Calculating
+    //7.5 Error Calculating
         #ifdef SIGNAL_LORENTZ
             Double_t NPos = parPos[0]*parPos[1]*TMath::Pi()/4;
             Double_t NNeg = parNeg[0]*parNeg[1]*TMath::Pi()/4;
@@ -363,7 +368,8 @@
 
         Double_t ErrA      = ErrAMinuB(ErrEffNeg, ErrEffPos);
 
-    //7.8 Output
+    //7.6 Output results
+        cout<<"\n*******************************RESULTS********************************\n"<<endl;
         cout<<"Number of B+  =\t"<<NPos<<" +- "<<ErrNPos<<endl;
         cout<<"Number of B-  =\t"<<NNeg<<" +- "<<ErrNNeg<<endl;
         cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
@@ -372,5 +378,7 @@
         ErrA = ErrAMultB(Asym, NNeg-NPos, NNeg+NPos, ErrN, ErrN);
         cout<<"Devi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
         cout<<"Predicted Error =\t"<<sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
-
+        cout<<"\n**********************************************************************"<<endl;
+        cout<<"**********************************************************************"<<endl;
+        cout<<"**********************************************************************\n\n"<<endl;
     }

@@ -80,10 +80,10 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
 
     //Dalitz mass data
-    v_Histos.push_back(h_Dalitz_Pos_Com = new TH2F("h_Dalitz_Pos_Com", "", 8, -1, 19, 12, -1, 29));
-    v_Histos.push_back(h_Dalitz_Pos_Bac = new TH2F("h_Dalitz_Pos_Bac", "", 8, -1, 19, 12, -1, 29));
-    v_Histos.push_back(h_Dalitz_Neg_Com = new TH2F("h_Dalitz_Neg_Com", "", 8, -1, 19, 12, -1, 29));
-    v_Histos.push_back(h_Dalitz_Neg_Bac = new TH2F("h_Dalitz_Neg_Bac", "", 8, -1, 19, 12, -1, 29));
+    v_Histos.push_back(h_Dalitz_Pos_Com = new TH2F("h_Dalitz_Pos_Com", "", 7, 0, 17.5, 12, 0, 30));
+    v_Histos.push_back(h_Dalitz_Pos_Bac = new TH2F("h_Dalitz_Pos_Bac", "", 7, 0, 17.5, 12, 0, 30));
+    v_Histos.push_back(h_Dalitz_Neg_Com = new TH2F("h_Dalitz_Neg_Com", "", 7, 0, 17.5, 12, 0, 30));
+    v_Histos.push_back(h_Dalitz_Neg_Bac = new TH2F("h_Dalitz_Neg_Bac", "", 7, 0, 17.5, 12, 0, 30));
 
 }
 
@@ -183,7 +183,7 @@ void MyAnalysis::Execute(){
                 if (pow(M0_B-M0B,2) < 1e4)
 	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
                 if(M0_B >5400 && M0_B<5600)
-                    h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/5500)*(M0B/5500),MH*MH/1e6*(M0B/5500)*(M0B/5500));
+                    h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
             }
             
         //select B- Decay
@@ -207,7 +207,7 @@ void MyAnalysis::Execute(){
                 if (pow(M0_B-M0B,2) < 1e4)
 	                h_Dalitz_Neg_Com->Fill(ML*ML/1e6,MH*MH/1e6);
                 if(M0_B >5400 && M0_B<5600)
-                    h_Dalitz_Neg_Bac->Fill(ML*ML/1e6*(M0B/5500)*(M0B/5500),MH*MH/1e6*(M0B/5500)*(M0B/5500));
+                    h_Dalitz_Neg_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
             }
 
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
@@ -216,7 +216,7 @@ void MyAnalysis::Execute(){
                 h_B_M0_Pos->Fill( M0_B );}
             else{
                 h_B_M0_Neg->Fill( M0_B );}
-            
+
             h_H_M->Fill( MH );
             h_L_M->Fill( ML );
         }
