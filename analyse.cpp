@@ -1,8 +1,8 @@
 
 #include "Analysis.hpp"
-#define C 1	            //Natural units for c
+#define C    1	         //Natural units for c
 #define M0K  493.667     //Mev
-#define M0Pi 139.570    //MeV
+#define M0Pi 139.570     //MeV
 #define M0D  1864.84     //MeV
 #define M0B  5279.29     //Mev
 
@@ -32,8 +32,10 @@ public:
     TH1F	    *h_H_M;
     TH1F	    *h_L_M;
     
-    TH2F	    *h_Dalitz_Com;
-    TH2F        *h_Dalitz_Bac;
+    TH2F	    *h_Dalitz_Pos_Com;
+    TH2F        *h_Dalitz_Pos_Bac;
+    TH2F	    *h_Dalitz_Neg_Com;
+    TH2F        *h_Dalitz_Neg_Bac;
 
 
     void     BookHistos();
@@ -57,11 +59,11 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back( h_PY   = new TH1F("h_PY",  "", 1000, -1e4, 1e4) );
     v_Histos.push_back( h_PZ   = new TH1F("h_PZ",  "", 1000, -1e5, 1e5) );
     v_Histos.push_back( h_TXTY = new TH2F("h_TXTY","", 1000, -1,1, 1000,-1, 1) );
-    v_Histos.push_back( a = new TH1F("a", "",1000,0,100));
-    v_Histos.push_back( b = new TH1F("b", "",1000,0,100));
-    v_Histos.push_back( c = new TH1F("c", "",1000,0,100));
-    v_Histos.push_back( d = new TH1F("d", "",1000,0,100));
-    v_Histos.push_back( e = new TH1F("e", "",1000,0,100));
+    v_Histos.push_back( a = new TH1F("B_FlightDistance", "",1000,0,100));
+    v_Histos.push_back( b = new TH1F("B_VertexChi2", "",1000,0,100));
+    v_Histos.push_back( c = new TH1F("H1_IPChi2", "",1000,0,100));
+    v_Histos.push_back( d = new TH1F("H2_IPChi2", "",1000,0,100));
+    v_Histos.push_back( e = new TH1F("H3_IPChi2", "",1000,0,100));
 
     //Pion Kaon Possibility
     v_Histos.push_back(h_H1Pi = new TH1F("h_H1Pi","", 1000, 0, 1) );
@@ -76,9 +78,12 @@ void MyAnalysis::BookHistos()
     //Higher and Lower Mass Pairs
     v_Histos.push_back(h_H_M =  new TH1F("h_H_M",  "", 500, 0, 5.8e3) );
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
+
     //Dalitz mass data
-    v_Histos.push_back(h_Dalitz_Com = new TH2F("h_Dalitz_Com","",50, -1, 36,50,-1,36));
-    v_Histos.push_back(h_Dalitz_Bac = new TH2F("h_Dalitz_Bac","",50, -1,36,50,-1,36));
+    v_Histos.push_back(h_Dalitz_Pos_Com = new TH2F("h_Dalitz_Pos_Com", "", 8, -1, 19, 12, -1, 29));
+    v_Histos.push_back(h_Dalitz_Pos_Bac = new TH2F("h_Dalitz_Pos_Bac", "", 8, -1, 19, 12, -1, 29));
+    v_Histos.push_back(h_Dalitz_Neg_Com = new TH2F("h_Dalitz_Neg_Com", "", 8, -1, 19, 12, -1, 29));
+    v_Histos.push_back(h_Dalitz_Neg_Bac = new TH2F("h_Dalitz_Neg_Bac", "", 8, -1, 19, 12, -1, 29));
 
 }
 
@@ -173,7 +178,14 @@ void MyAnalysis::Execute(){
                     M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
                     M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
                 }
+                if (M2 > M1){ MH = M2; ML = M1; }
+                else        { MH = M1; ML = M2; }
+                if (pow(M0_B-M0B,2) < 1e4)
+	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
+                if(M0_B >5400 && M0_B<5600)
+                    h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/5500)*(M0B/5500),MH*MH/1e6*(M0B/5500)*(M0B/5500));
             }
+            
         //select B- Decay
         else if (H1_Charge+H2_Charge+H3_Charge == -1)
             {
@@ -190,23 +202,21 @@ void MyAnalysis::Execute(){
                     M1 = sqrt(pow(E3+E1,2)-(pow(H3_PX + H1_PX,2)+pow(H3_PY + H1_PY,2)+pow(H3_PZ + H1_PZ,2)));
                     M2 = sqrt(pow(E3+E2,2)-(pow(H3_PX + H2_PX,2)+pow(H3_PY + H2_PY,2)+pow(H3_PZ + H2_PZ,2)));
                 }
-                else
-                    std::cout<<"error: Charge= "<<H1_Charge+H2_Charge+H3_Charge<<std::endl;
+                if (M2 > M1){ MH = M2; ML = M1; }
+                else        { MH = M1; ML = M2; }
+                if (pow(M0_B-M0B,2) < 1e4)
+	                h_Dalitz_Neg_Com->Fill(ML*ML/1e6,MH*MH/1e6);
+                if(M0_B >5400 && M0_B<5600)
+                    h_Dalitz_Neg_Bac->Fill(ML*ML/1e6*(M0B/5500)*(M0B/5500),MH*MH/1e6*(M0B/5500)*(M0B/5500));
             }
-        //Decide Which one is Bigger
-        if (M2 > M1){ MH = M2; ML = M1; }
-        else        { MH = M1; ML = M2; }
-        //fill
-        if (pow(M0_B-M0B,2) < 1e4)
-	        h_Dalitz_Com->Fill(ML*ML/1e6,MH*MH/1e6);
-        if(M0_B >5400 && M0_B<5600)
-            h_Dalitz_Bac->Fill(ML*ML/1e6*(M0B/5500)*(M0B/5500),MH*MH/1e6*(M0B/5500)*(M0B/5500));
+
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
         if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
             if(H1_Charge+H2_Charge+H3_Charge == 1){
                 h_B_M0_Pos->Fill( M0_B );}
             else{
                 h_B_M0_Neg->Fill( M0_B );}
+            
             h_H_M->Fill( MH );
             h_L_M->Fill( ML );
         }

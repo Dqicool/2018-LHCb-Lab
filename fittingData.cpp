@@ -11,13 +11,15 @@
 //2 LIMIT
     #define LIML 5.05e3
     #define LIMH 6e3
+    #define LIMZ 240
+    //#define LIMZ 120
 //3 Choosing Interests using #define
     //3.1 choose Fitting method
         #define BACKG_EXP
 
         //#define SIGNAL_DOUBLE_GAUS
-        #define SIGNAL_CRUIJFF
-        //#define SIGNAL_LORENTZ
+        //#define SIGNAL_CRUIJFF
+        #define SIGNAL_LORENTZ
         
         #define SHOULDER_GAUS
         //#define SHOULDER_ARGUS
@@ -115,7 +117,7 @@
     //7 Declaration
         //7.1 declare fitting function
             #ifdef BACKG_EXP
-                cout<<"BackGround fitting method :\tDouble Gaussian"<<endl;
+                cout<<"BackGround fitting method :\tExp"<<endl;
             #endif
             #ifdef SIGNAL_CRUIJFF
                 #ifdef SIGNAL_DOUBLE_GAUS
@@ -182,7 +184,7 @@
                 #ifdef SIGNAL_LORENTZ 
                     ComPos->SetParName(0,"Signal I");
                     ComPos->SetParameter(0, 90);
-                    ComPos->SetParLimits(0,0,100);
+                    ComPos->SetParLimits(0,0,200);
 
                     ComPos->SetParName(1,"Signal Gam");
                     ComPos->SetParameter(1, 50);
@@ -257,7 +259,7 @@
             ComNeg->SetName("ComNeg");
     //7.5 fitting Postive 
         TCanvas *c8 = new TCanvas("c8","",600,400);
-        B0Pos->SetAxisRange(0,120,"Y");
+        B0Pos->SetAxisRange(0,LIMZ,"Y");
         TFitResultPtr posPtr = B0Pos->Fit(ComPos,"RS");
         //B0Pos->SetAxisRange(5100,5500);
         
@@ -284,7 +286,7 @@
 
     //7.6 fitting Negtive
         TCanvas *c9 = new TCanvas("c9","",600,400);
-        B0Neg->SetAxisRange(0,120,"Y");
+        B0Neg->SetAxisRange(0,LIMZ,"Y");
         TFitResultPtr negPtr = B0Neg->Fit(ComNeg,"R");
         //B0Neg->SetAxisRange(5100,5500);
 

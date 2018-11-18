@@ -5,10 +5,10 @@
 
 void drawOutput() {
 
-    // Example Root Macro for third year B->hhh Lab
+// Example Root Macro for third year B->hhh Lab
     // Open the root file that was produced by running the example program
 
-    // TFile *f = new TFile("outputPhaseSpace.root");
+	// TFile *f = new TFile("outputPhaseSpace.root");
 		TFile *f1 = new TFile("Output/DataMagnetDown.root");
 		TFile *f2 = new TFile("Output/PhaseSpace.root");
 		TFile *f3 = new TFile("Output/DataAll.root");

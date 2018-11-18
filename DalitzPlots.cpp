@@ -8,6 +8,7 @@
     #include <TF2.h>
     #include <iostream>
     using namespace std;
+    #define CANVASIZE 400
 // Define Data Choice
     #define DATA_ALL
     //#define DATA_UP
@@ -31,42 +32,67 @@ void DalitzPlots(){
         //7.3 load chosen Data from file
             #ifdef DATA_ALL
                 TFile *f = new TFile("Output/DataAll.root");
-		        TH2F *DalitzCom = (TH2F*) f->Get("h_Dalitz_Com");
-                TH2F *DalitzBac = (TH2F*) f->Get("h_Dalitz_Bac");
-                TH2F *DalitzSig = (TH2F*) DalitzCom->Clone("DalitSig");
-                DalitzSig->Add(DalitzBac,-1);
-                //!Set All Minus Bins To 0 
-                for(int i = 0; i<100; i++){
-                    for( int j=0;j<100;j++){
-                        DalitzSig->SetBinContent(i,j,DalitzSig->GetBinContent(i,j)<0?0:DalitzSig->GetBinContent(i,j));
-                    }
-                }
-                    
             #endif
             #ifdef DATA_DOWN
                 TFile *f = new TFile("Output/DataMagnetDown.root");
-		        TH2F *Dalitz = (TH2F*) f->Get("h_Dalitz");
             #endif
             #ifdef DATA_UP
                 TFile *f = new TFile("Output/DataMagnetUp.root");
-		        TH2F *Dalitz = (TH2F*) f->Get("h_Dalitz");
             #endif
             #ifdef DATA_PHASE_SPACE
                 TFile *f = new TFile("Output/PhaseSpace.root");
-		        TH2F *Dalitz = (TH2F*) f->Get("h_Dalitz");
             #endif
 //7.3 
+    TH2F *DalitzPosCom = (TH2F*) f->Get("h_Dalitz_Pos_Com");
+    TH2F *DalitzPosBac = (TH2F*) f->Get("h_Dalitz_Pos_Bac");
+    TH2F *DalitzPosSig = (TH2F*) DalitzPosCom->Clone("DalitPosSig");
+    DalitzPosSig->Add(DalitzPosBac,-1);
+    /*//!Set All Minus Bins To 0 
+    for(int i = 0; i<100; i++){
+        for( int j=0;j<100;j++){
+            DalitzPosSig->SetBinContent(i,j,DalitzPosSig->GetBinContent(i,j)<0?0:DalitzPosSig->GetBinContent(i,j));
+        }
+    } */
 
-TCanvas *c10 = new TCanvas("c10","",600,600);
-DalitzCom->Draw("colz");
-c10->SaveAs("Plots/c10_DalitzPlot_Com.pdf");
+    TH2F *DalitzNegCom = (TH2F*) f->Get("h_Dalitz_Neg_Com");
+    TH2F *DalitzNegBac = (TH2F*) f->Get("h_Dalitz_Neg_Bac");
+    TH2F *DalitzNegSig = (TH2F*) DalitzPosCom->Clone("DalitNegSig");
+    DalitzNegSig->Add(DalitzNegBac,-1);
+    /*//!Set All Minus Bins To 0 
+    for(int i = 0; i<100; i++){
+        for( int j=0;j<100;j++){
+            DalitzNegSig->SetBinContent(i,j,DalitzNegSig->GetBinContent(i,j)<0?0:DalitzNegSig->GetBinContent(i,j));
+        }
+    } */
 
-TCanvas *c11 = new TCanvas("c11","",600,600);
-DalitzBac->Draw("colz");
-c11->SaveAs("Plots/c11_DalitzPlot_Bac.pdf");
+TCanvas *c10 = new TCanvas("c10","",CANVASIZE,CANVASIZE);
+DalitzPosCom->SetAxisRange(0,500,"Z");
+DalitzPosCom->Draw("colz");
+c10->SaveAs("Plots/c10_DalitzPlot_Pos_Com.pdf");
 
-TCanvas *c12 = new TCanvas("c12","",600,600);
-DalitzSig->Draw("colz");
-c12->SaveAs("Plots/c12_DalitzPlot_Sig.pdf");
+TCanvas *c11 = new TCanvas("c11","",CANVASIZE,CANVASIZE);
+DalitzPosBac->SetAxisRange(0,500,"Z");
+DalitzPosBac->Draw("colz");
+c11->SaveAs("Plots/c11_DalitzPlot_Pos_Bac.pdf");
+
+TCanvas *c12 = new TCanvas("c12","",CANVASIZE,CANVASIZE);
+DalitzPosSig->SetAxisRange(0,500,"Z");
+DalitzPosSig->Draw("colz");
+c12->SaveAs("Plots/c12_DalitzPlot_Pos_Sig.pdf");
+
+TCanvas *c13 = new TCanvas("c13","",CANVASIZE,CANVASIZE);
+DalitzNegCom->SetAxisRange(0,500,"Z");
+DalitzNegCom->Draw("colz");
+c13->SaveAs("Plots/c13_DalitzPlot_Pos_Com.pdf");
+
+TCanvas *c14 = new TCanvas("c14","",CANVASIZE,CANVASIZE);
+DalitzNegBac->SetAxisRange(0,500,"Z");
+DalitzNegBac->Draw("colz");
+c14->SaveAs("Plots/c14_DalitzPlot_Pos_Bac.pdf");
+
+TCanvas *c15 = new TCanvas("c15","",CANVASIZE,CANVASIZE);
+DalitzNegSig->SetAxisRange(0,500,"Z");
+DalitzNegSig->Draw("colz");
+c15->SaveAs("Plots/c15_DalitzPlot_Pos_Sig.pdf");
 
 }
