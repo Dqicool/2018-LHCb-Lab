@@ -8,11 +8,12 @@
     #include <TF2.h>
     #include <iostream>
     using namespace std;
-    #define CANVASIZE 400
+    #define CANVASIZE1 1680
+    #define CANVASIZE2 1050
 
-    #define DRAW_BAC
-    #define DRAW_COM
-    #define DRAW_SIG
+    //#define DRAW_BAC
+    //#define DRAW_COM
+    //#define DRAW_SIG
     #define DRAW_ASY
 
 // Define Data Choice
@@ -60,8 +61,8 @@
             {
                 for( int j=0;j<100;j++)
                 {
-                    DalitzNegBac->SetBinContent(i,j,DalitzNegBac->GetBinContent(i,j)/3);
-                    DalitzPosBac->SetBinContent(i,j,DalitzPosBac->GetBinContent(i,j)/3);
+                    DalitzNegBac->SetBinContent(i,j,DalitzNegBac->GetBinContent(i,j)/5);
+                    DalitzPosBac->SetBinContent(i,j,DalitzPosBac->GetBinContent(i,j)/5);
                 }
             } 
         //extract signal
@@ -143,19 +144,13 @@
 
             #ifdef DRAW_ASY
 
-                TCanvas *c16 = new TCanvas("c16","",CANVASIZE,CANVASIZE);
+                TCanvas *c16 = new TCanvas("c16","",CANVASIZE1,CANVASIZE2);
                 ASSY->SetAxisRange(-1,1,"Z");
                 ASSY->Draw("colz1");
-                ASSY->Draw("TEXT SAME");
-                ASSY->SetBarOffset(0.2);
-                NumMinus->SetBarOffset(-0.2);
-                NumMinus->Draw("SAME TEXT ");
-                c16->SaveAs("Plots/c16_Local_Assymmytry.pdf");
-
-                TCanvas *c17 = new TCanvas("c17","",CANVASIZE,CANVASIZE);
-                NumMinus->Draw("colz1");
-                NumMinus->SetBarOffset(-0.2);
-                NumMinus->Draw("SAME TEXT ");
-                c17->SaveAs("Plots/c17_Local_ABS_Assymmytry.pdf");
+                //ASSY->Draw("TEXT SAME");
+                //ASSY->SetBarOffset(0.2);
+                //NumMinus->SetBarOffset(-0.2);
+                //NumMinus->Draw("SAME TEXT ");
+                c16->SaveAs("55.pdf");
             #endif
     }
