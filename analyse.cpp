@@ -6,8 +6,8 @@
 #define M0D  1864.84     //MeV
 #define M0B  5279.29     //Mev
 
-#define HEI 4 //0.25 0.5 1 2 4
-#define WID 4 //4
+#define HEI 0.25 //0.25 0.5 1 2 4
+#define WID 0.25 //4
 
 
 // This is the analysis class, which realises the generic Analysis
@@ -84,10 +84,10 @@ void MyAnalysis::BookHistos()
     v_Histos.push_back(h_L_M =  new TH1F("h_L_M",  "", 500, 0, 5.8e3) );
 
     //Dalitz mass data
-    v_Histos.push_back(h_Dalitz_Pos_Com = new TH2F("h_Dalitz_Pos_Com", "", 24/WID, -4, 20, 32/HEI, -2, 30));
-    v_Histos.push_back(h_Dalitz_Pos_Bac = new TH2F("h_Dalitz_Pos_Bac", "", 24/WID, -4, 20, 32/HEI, -2, 30));
-    v_Histos.push_back(h_Dalitz_Neg_Com = new TH2F("h_Dalitz_Neg_Com", "", 24/WID, -4, 20, 32/HEI, -2, 30));
-    v_Histos.push_back(h_Dalitz_Neg_Bac = new TH2F("h_Dalitz_Neg_Bac", "", 24/WID, -4, 20, 32/HEI, -2, 30));
+    v_Histos.push_back(h_Dalitz_Pos_Com = new TH2F("h_Dalitz_Pos_Com", "", 15/WID, 0, 15, 30/HEI, 0, 30));
+    v_Histos.push_back(h_Dalitz_Pos_Bac = new TH2F("h_Dalitz_Pos_Bac", "", 15/WID, 0, 15, 30/HEI, 0, 30));
+    v_Histos.push_back(h_Dalitz_Neg_Com = new TH2F("h_Dalitz_Neg_Com", "", 15/WID, 0, 15, 30/HEI, 0, 30));
+    v_Histos.push_back(h_Dalitz_Neg_Bac = new TH2F("h_Dalitz_Neg_Bac", "", 15/WID, 0, 15, 30/HEI, 0, 30));
 
 }
 
@@ -185,7 +185,7 @@ void MyAnalysis::Execute(){
                 else        { MH = M1; ML = M2; }
                 if (pow(M0_B-M0B,2) < 1369)
 	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
-                if(M0_B >5400 && M0_B<5770)
+                if(M0_B >5400 && M0_B<5918)
                     h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
             }
             
