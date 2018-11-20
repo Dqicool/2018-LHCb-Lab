@@ -5,6 +5,7 @@
 #define M0Pi 139.570     //MeV
 #define M0D  1864.84     //MeV
 #define M0B  5279.29     //Mev
+#define CUT 0.79371886
 
 #define HEI 0.25 //0.25 0.5 1 2 4
 #define WID 0.25 //4
@@ -47,6 +48,11 @@ public:
     //Bool_t   Cut();
     void     Execute();
 };
+
+Double_t Scale(Double_t M0, Double_t Mpair)
+{
+    return 4*M0Pi*M0Pi/1e6+(Mpair*Mpair-4*M0Pi*M0Pi)/1e6*(M0B/M0)*(M0B/M0);
+}
 
 void MyAnalysis::BookHistos()
 {
@@ -109,7 +115,7 @@ void MyAnalysis::Execute(){
 
 
     //equal functionality to cut() 
-        if ( (H1_ProbPi < 0.843) || (H2_ProbPi < 0.843) || (H3_ProbPi < 0.843))
+        if ( (H1_ProbPi < CUT) || (H2_ProbPi < CUT) || (H3_ProbPi < CUT))
             return;
         if ( H1_isMuon || H2_isMuon || H3_isMuon)
             return;
@@ -186,7 +192,7 @@ void MyAnalysis::Execute(){
                 if (pow(M0_B-M0B,2) < 1369)
 	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
                 if(M0_B >5400 && M0_B<5918)
-                    h_Dalitz_Pos_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
+                    h_Dalitz_Pos_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
             }
             
         //select B- Decay
@@ -209,8 +215,8 @@ void MyAnalysis::Execute(){
                 else        { MH = M1; ML = M2; }
                 if (pow(M0_B-M0B,2) < 1369)
 	                h_Dalitz_Neg_Com->Fill(ML*ML/1e6,MH*MH/1e6);
-                if(M0_B >5400 && M0_B<5770)
-                    h_Dalitz_Neg_Bac->Fill(ML*ML/1e6*(M0B/M0_B)*(M0B/M0_B),MH*MH/1e6*(M0B/M0_B)*(M0B/M0_B));
+                if(M0_B >5400 && M0_B<5918)
+                    h_Dalitz_Neg_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
             }
 
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass

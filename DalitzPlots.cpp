@@ -7,15 +7,16 @@
     #include <TF1.h>
     #include <TF2.h>
     #include <iostream>
+//
     using namespace std;
     #define CANVASIZE1 600
     #define CANVASIZE2 400
-
+//
     #define DRAW_BAC
     #define DRAW_COM
     #define DRAW_SIG
     #define DRAW_ASY
-
+//
     #define MERGE
 
 // Define Data Choice
@@ -166,17 +167,20 @@
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  2.75,11, 7.75,11);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  2.75,8.25,13,15);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  2.75,8.25,11,13);
-            MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  3.5,7,15,17);
+            MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  3.5,8.25,15,17);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  3.5,7,17,18);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  3.5,5,18,21);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  3.5,5,21,24.5);
-            MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  5,7.25,21,22.75);
+            MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  5,7.25,21,23);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  5,8,19.75,21);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  5,10,18,19.75);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  7,11.5,17,18);
+
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  7,13,15,17);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,14,13.75,15);
             MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,13.75,11,13.75);
+            //MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,14,11,17);
+
         #endif
 
         //7.5 Calculate Global asymmytries

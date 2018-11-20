@@ -9,9 +9,9 @@
     using namespace std;
 
 //2 LIMIT
-    #define LIML 5.05e3
-    #define LIMH 6e3
-    #define LIMZ 240
+    #define LIML 5.13e3
+    #define LIMH 5.7e3
+    #define LIMZ 480
     #define BIN_WID 4
     //#define LIMZ 120
 //3 Choosing Interests using #define
@@ -31,7 +31,7 @@
             #define SIGNAL_CRUIJFF
             #endif
     //3.2 choosing data file
-        // #define DATA_UP
+        //#define DATA_UP
         //#define DATA_DOWN
         #define DATA_ALL
 
@@ -188,7 +188,7 @@
             #ifdef SIGNAL_LORENTZ 
                 ComPos->SetParName(0,"Signal I");
                 ComPos->SetParameter(0, 90);
-                ComPos->SetParLimits(0,0,200);
+                ComPos->SetParLimits(0,0,400);
 
                 ComPos->SetParName(1,"Signal Gam");
                 ComPos->SetParameter(1, 50);
@@ -200,7 +200,7 @@
             #endif
             #ifdef SIGNAL_CRUIJFF 
                 ComPos->SetParName(0, "Signal x0");
-                ComPos->SetParameter(0, 5200);
+                ComPos->SetParameter(0, 5280);
                 ComPos->SetParLimits(0,5200,5400);
 
                 ComPos->SetParName(1, "Signal SigL");
@@ -248,11 +248,11 @@
                 #ifdef SHOULDER_GAUS
                     ComPos->SetParName(NUM_PAR_SIG,"SHOULD I");
                     ComPos->SetParameter(NUM_PAR_SIG, 30);
-                    ComPos->SetParLimits(NUM_PAR_SIG,0,100);
+                    ComPos->SetParLimits(NUM_PAR_SIG,0,200000);
 
                     ComPos->SetParName(NUM_PAR_SIG+1,"SHOULD x0");
                     ComPos->SetParameter(NUM_PAR_SIG+1, 5050);
-                    ComPos->SetParLimits(NUM_PAR_SIG+1,5000,5100);
+                    ComPos->SetParLimits(NUM_PAR_SIG+1,5050,5050);
 
                     ComPos->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");
                     ComPos->SetParameter(NUM_PAR_SIG+2, 30);
@@ -329,8 +329,8 @@
             Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
             cout<<NPos<<endl;
             cout<<NNeg<<endl;
-            Double_t ErrNPos = ErrAMultB(NPos,parPos[0], parPos[1],errPos[0], errPos[1])/BIN_WID;
-            Double_t ErrNNeg = ErrAMultB(NNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1])/BIN_WID;
+            Double_t ErrNPos = ErrAMultB(NNPos,parPos[0]/BIN_WID, parPos[1]/BIN_WID,errPos[0]/BIN_WID, errPos[1]/BIN_WID);
+            Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0]/BIN_WID, parNeg[1]/BIN_WID,errNeg[0]/BIN_WID, errNeg[1]/BIN_WID);
         #endif
 
         #ifdef SIGNAL_CRUIJFF
@@ -341,10 +341,10 @@
                 Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
                 cout<<NPos<<'\t'<<ANPos<<endl;
                 cout<<NNeg<<'\t'<<ANNeg<<endl;
-                Double_t ErrSigPos = ErrAPlusB(errPos[1],errPos[3]);
-                Double_t ErrSigNeg = ErrAPlusB(errNeg[1],errNeg[3]);
-                Double_t ErrNPos = ErrAMultB(NPos, parPos[5], parPos[3]+parPos[1], errPos[5], ErrSigPos);
-                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5], parNeg[3]+parNeg[1], errNeg[5], ErrSigNeg);
+                Double_t ErrSigPos = ErrAPlusB(errPos[1]/BIN_WID, errPos[3]/BIN_WID);
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1]/BIN_WID, errNeg[3]/BIN_WID);
+                Double_t ErrNPos = ErrAMultB(NPos, parPos[5]/BIN_WID, (parPos[3]+parPos[1])/BIN_WID, errPos[5]/BIN_WID, ErrSigPos);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg);
             #else
             //TODO Numerical Method
             //!analytical, notgood,  Alpha tails has been ignored ,for double Gaussian it's good
