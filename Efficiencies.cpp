@@ -2,14 +2,14 @@
 #include<TMath.h>
 using namespace std;
 
-#define EFFI_UP_POS  0.450987
-#define ERR_EFFI_UP_POS 0.0206001
-#define EFFI_DOWN_POS  0.483521
-#define ERR_EFFI_DOWN_POS 0.0186077
-#define EFFI_UP_NEG  1 - 0.450987
-#define ERR_EFFI_UP_NEG 0.0239456
-#define EFFI_DOWN_NEG  1 - 0.483521
-#define ERR_EFFI_DOWN_NEG 0.0194789
+#define EFFI_UP_POS  0.4444943
+#define ERR_EFFI_UP_POS 0.0647
+#define EFFI_DOWN_POS  0.444798
+#define ERR_EFFI_DOWN_POS 0.0710
+#define EFFI_UP_NEG  1 - EFFI_UP_POS
+#define ERR_EFFI_UP_NEG 0.0812351
+#define EFFI_DOWN_NEG  1 - EFFI_DOWN_POS
+#define ERR_EFFI_DOWN_NEG 0.0835704
 
 // Error Propagation functions
     Double_t ErrAPlusB(Double_t ErrA, Double_t ErrB)

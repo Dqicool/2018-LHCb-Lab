@@ -33,9 +33,9 @@
             #define SIGNAL_CRUIJFF
             #endif
     //3.2 choosing data file
-        //#define DATA_UP
+        #define DATA_UP
         //#define DATA_DOWN
-        #define DATA_ALL
+        //#define DATA_ALL
 
 //4 Quantity of Parameters
     #define NUM_PAR_BAC 2
@@ -267,8 +267,8 @@
                     ComPos->SetParLimits(NUM_PAR_SIG,0,200000);
 
                     ComPos->SetParName(NUM_PAR_SIG+1,"SHOULD x0");
-                    ComPos->SetParameter(NUM_PAR_SIG+1, 5130);
-                    ComPos->SetParLimits(NUM_PAR_SIG+1,5130,5130);
+                    ComPos->SetParameter(NUM_PAR_SIG+1, 5050);
+                    ComPos->SetParLimits(NUM_PAR_SIG+1,5050,5050);
 
                     ComPos->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");
                     ComPos->SetParameter(NUM_PAR_SIG+2, 3.28215e+01);
@@ -276,8 +276,8 @@
                 #endif
                 #ifdef KAON_GAUS
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO,"Kaon I");
-                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 10);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,20);
+                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 0);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,0);
 
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1,"Kaon x0");
                     ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 5258.0107);
@@ -404,14 +404,13 @@
             #endif
         #endif
         Double_t Asym = (NNeg-NPos)/(NNeg+NPos);
-        Double_t ErrN    = ErrAPlusB(ErrNPos, ErrNNeg);
-        Double_t EffPos  = NPos/(NPos+NNeg);
-        Double_t EffNeg  = NNeg/(NPos+NNeg);
-
-        Double_t ErrEffPos = ErrAMultB(EffPos,NPos, NPos+NNeg, ErrNPos,ErrN);
-        Double_t ErrEffNeg = ErrAMultB(EffNeg,NNeg, NPos+NNeg, ErrNNeg,ErrN);
-
-        Double_t ErrA      = ErrAMinuB(ErrEffNeg, ErrEffPos);
+        Double_t EffPos = 1/(1+NNeg/NPos);
+        Double_t ErrNPOverNN = ErrAMultB(NNeg/NPos,NNeg,NPos,ErrNNeg, ErrNPos);
+        Double_t ErrEffPos = ErrAMultB(1/(1+NNeg/NPos),1,(1+NNeg/NPos),0,ErrNPOverNN);
+        Double_t EffNeg = 1/(1+NPos/NNeg);
+        Double_t ErrNNOverNP = ErrAMultB(NPos/NNeg,NPos,NNeg,ErrNPos, ErrNNeg);
+        Double_t ErrEffNeg = ErrAMultB(EffNeg,1,(1+NPos/NNeg),0,ErrNNOverNP);
+        Double_t ErrA = ErrAPlusB(ErrEffNeg,ErrEffPos);
 
     //7.6 Output results
         cout<<"\n*******************************RESULTS********************************\n"<<endl;
@@ -420,7 +419,7 @@
         cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
         cout<<"Efficiency N- =\t"<<EffNeg<<" +- "<<ErrEffNeg<<endl;
         cout<<"Effi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
-        ErrA = ErrAMultB(Asym, NNeg-NPos, NNeg+NPos, ErrN, ErrN);
+
         cout<<"Devi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
         cout<<"Predicted Error =\t"<<TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
         cout<<"Chi2 Pos and Neg\t "<<Chi2Pos/131<<'\t'<<Chi2Neg/131<<endl;
