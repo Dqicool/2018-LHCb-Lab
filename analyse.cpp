@@ -222,9 +222,13 @@ void MyAnalysis::Execute(){
         //Discard the D meson Decay by Simply cut M1 or M2 in D meson Mass
         if (pow(MH - M0D ,2) > 2500 && pow(ML-M0D, 2) > 2500){
             if(H1_Charge+H2_Charge+H3_Charge == 1){
-                h_B_M0_Pos->Fill( M0_B );}
+                h_B_M0_Pos->Fill( M0_B );
+                //h_B_M0_Pos->Sumw2();
+            }
             else{
-                h_B_M0_Neg->Fill( M0_B );}
+                h_B_M0_Neg->Fill( M0_B );
+                //h_B_M0_Neg->Sumw2();
+            }
 
             h_H_M->Fill( MH );
             h_L_M->Fill( ML );

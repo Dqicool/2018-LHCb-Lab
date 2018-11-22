@@ -18,13 +18,15 @@
     //3.1 choose Fitting method
         #define BACKG_EXP
 
-        //#define SIGNAL_DOUBLE_GAUS
+        #define SIGNAL_DOUBLE_GAUS
         //#define SIGNAL_CRUIJFF
-        #define SIGNAL_LORENTZ
+        //#define SIGNAL_LORENTZ
         
         #define SHOULDER_GAUS
         //#define SHOULDER_ARGUS
         //#define SHOULDER_LORENTZ
+
+        #define KAON_GAUS
 
         //3.1.A because double Gauss and Cruijff are the same but Alpha
             #ifdef SIGNAL_DOUBLE_GAUS
@@ -54,7 +56,10 @@
     #ifdef SHOULDER_ARGUS
         #define NUM_PAR_SHO 0 //TODO
     #endif
-    #define NUM_PAR NUM_PAR_BAC+NUM_PAR_SIG+NUM_PAR_SHO
+    #ifdef KAON_GAUS 
+        #define NUM_PAR_KAON 3
+    #endif
+    #define NUM_PAR NUM_PAR_BAC+NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON
 
 
 //5 Define fitting function
@@ -90,9 +95,17 @@
                     return par[5]*TMath::Exp(-(pow(x[0]-par[0],2)/(2*(pow(par[3],2)+par[4]*(pow(x[0]-par[0],2))))));
             #endif
         }
+    //Kaon correction
+        Double_t KaonCorr(Double_t *x, Double_t *par)
+        {
+        #ifdef KAON_GAUS
+            return par[0] * TMath::Exp(-0.5 * pow((x[0] - par[1]) / par[2], 2));
+        #endif
+        }
+
     //5.4 Combine Signal and High Mass Background Function
         Double_t Combine(Double_t *x, Double_t *par){
-            return Signal(x, par) + Shoulder(x,&par[NUM_PAR_SIG]) + BackGround(x, &par[NUM_PAR_SIG+NUM_PAR_SHO]);
+            return Signal(x, par) + Shoulder(x,&par[NUM_PAR_SIG]) + BackGround(x, &par[NUM_PAR-NUM_PAR_KAON+1]) + KaonCorr(x,&par[NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON]);
         }
 //6 Error Propagation functions
     Double_t ErrAPlusB(Double_t ErrA, Double_t ErrB)
@@ -142,6 +155,9 @@
             #ifdef SHOULDER_LORENTZ
                 cout<<"Shoulder fitting method :\tLorentz"<<endl;
             #endif
+            #ifdef KAON_GAUS
+                cout<<"Kaon Correction fitting method :\tGaussian"<<endl;
+            #endif
         //7.1.2 declare Data choice
             #ifdef DATA_ALL
                 cout<<"Using all Data"<<endl;
@@ -176,13 +192,13 @@
     //7.2 Configure fitting parametres
         //Background
             #ifdef BACKG_EXP
-                ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO, "BackGr A");
-                ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, -1.26e-3);
-                ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO, -1,0);
+                ComPos->SetParName(NUM_PAR-NUM_PAR_KAON+1, "BackGr A");
+                ComPos->SetParameter(NUM_PAR-NUM_PAR_KAON+1, -1.26e-3);
+                ComPos->SetParLimits(NUM_PAR-NUM_PAR_KAON+1, -1,0);
 
-                ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1, "BackGr B");
-                ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 10);
-                ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1, 0,20);
+                ComPos->SetParName(NUM_PAR-NUM_PAR_KAON+2, "BackGr B");
+                ComPos->SetParameter(NUM_PAR-NUM_PAR_KAON+2, 10);
+                ComPos->SetParLimits(NUM_PAR-NUM_PAR_KAON+2, 0,20);
             #endif
         //Signal
             #ifdef SIGNAL_LORENTZ 
@@ -201,7 +217,7 @@
             #ifdef SIGNAL_CRUIJFF 
                 ComPos->SetParName(0, "Signal x0");
                 ComPos->SetParameter(0, 5280);
-                ComPos->SetParLimits(0,5200,5400);
+                ComPos->SetParLimits(0,5270,5290);
 
                 ComPos->SetParName(1, "Signal SigL");
                 ComPos->SetParameter(1, 50);
@@ -221,7 +237,7 @@
                 
                 ComPos->SetParName(5, "Signal I");
                 ComPos->SetParameter(5, 60);
-                ComPos->SetParLimits(5,0,150);
+                ComPos->SetParLimits(5,0,300);
 
                 #ifdef SIGNAL_DOUBLE_GAUS
                 ComPos->FixParameter(2,0);
@@ -251,12 +267,25 @@
                     ComPos->SetParLimits(NUM_PAR_SIG,0,200000);
 
                     ComPos->SetParName(NUM_PAR_SIG+1,"SHOULD x0");
-                    ComPos->SetParameter(NUM_PAR_SIG+1, 5050);
-                    ComPos->SetParLimits(NUM_PAR_SIG+1,5050,5050);
+                    ComPos->SetParameter(NUM_PAR_SIG+1, 5130);
+                    ComPos->SetParLimits(NUM_PAR_SIG+1,5130,5130);
 
                     ComPos->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");
                     ComPos->SetParameter(NUM_PAR_SIG+2, 30);
                     ComPos->SetParLimits(NUM_PAR_SIG+2,0,100);
+                #endif
+                #ifdef KAON_GAUS
+                    ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO,"Kaon I");
+                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 0);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,0);
+
+                    ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1,"Kaon x0");
+                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 5258.0107);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1,5258.0107,5258.0107);
+
+                    ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+2,"Kaon Sig");
+                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+2, 10);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+2,10,10);
                 #endif
         //7.4.3 Create Neg fitting obj
             TF1 *ComNeg = ComPos;
@@ -265,15 +294,18 @@
         cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
         TCanvas *c8 = new TCanvas("c8","",600,400);
         B0Pos->SetAxisRange(0,LIMZ,"Y");
-        TFitResultPtr posPtr = B0Pos->Fit(ComPos,"RS");
+        B0Pos->Fit(ComPos,"R");
+        double Chi2Pos = ComPos->GetChisquare();
         //B0Pos->SetAxisRange(5100,5500);
         
         TF1 *BacPos      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
         TF1 *FourBodyPos = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
         TF1 *SigPos      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
+        TF1 *KaonCorrPos = new TF1("KaonCorrPos",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
         SigPos->SetLineColor(kBlue);
         BacPos->SetLineColor(kYellow);
         FourBodyPos->SetLineColor(kGreen);
+        KaonCorrPos->SetLineColor(kMagenta);
 
         Double_t parPos[NUM_PAR];
         Double_t *errPos;
@@ -281,11 +313,13 @@
         errPos = (Double_t*)ComPos->GetParErrors();
         SigPos->SetParameters(&parPos[0]);
         FourBodyPos->SetParameters(&parPos[NUM_PAR_SIG]);
-        BacPos->SetParameters(&parPos[NUM_PAR - NUM_PAR_BAC]);
+        KaonCorrPos->SetParameters(&parPos[NUM_PAR_SIG+NUM_PAR_SHO]);
+        BacPos->SetParameters(&parPos[NUM_PAR - NUM_PAR_BAC+1]);
 
         SigPos->Draw("same");
         BacPos->Draw("same");
         FourBodyPos->Draw("same");
+        KaonCorrPos->Draw("SAME");
 
         c8->SaveAs("Plots/c8_Background&SignalFitsPos.pdf");
 
@@ -293,16 +327,18 @@
         cout<<"\n*******************************NEGTIVE*******************************\n"<<endl;
         TCanvas *c9 = new TCanvas("c9","",600,400);
         B0Neg->SetAxisRange(0,LIMZ,"Y");
-        TFitResultPtr negPtr = B0Neg->Fit(ComNeg,"R");
+        B0Neg->Fit(ComNeg,"R");
+        double Chi2Neg = ComNeg->GetChisquare();
         //B0Neg->SetAxisRange(5100,5500);
 
         TF1 *BacNeg      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
         TF1 *FourBodyNeg = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
         TF1 *SigNeg      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
+        TF1 *KaonCorrNeg = new TF1("KaonCorrNeg",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
         SigNeg->SetLineColor(kBlue);
         BacNeg->SetLineColor(kYellow);
         FourBodyNeg->SetLineColor(kGreen);
-
+        KaonCorrNeg->SetLineColor(kMagenta);
 
         Double_t parNeg[NUM_PAR];
         Double_t *errNeg;
@@ -310,12 +346,14 @@
         errNeg = (Double_t*)ComNeg->GetParErrors();
         SigNeg->SetParameters(&parNeg[0]);
         FourBodyNeg->SetParameters(&parNeg[NUM_PAR_SIG]);
-        BacNeg->SetParameters(&parNeg[NUM_PAR-NUM_PAR_BAC]);
+        KaonCorrNeg->SetParameters(&parPos[NUM_PAR_SIG+NUM_PAR_SHO]);
+        BacNeg->SetParameters(&parNeg[NUM_PAR-NUM_PAR_BAC+1]);
         
 
         SigNeg->Draw("same");
         BacNeg->Draw("same");
         FourBodyNeg->Draw("same");
+        KaonCorrPos->Draw("SAME");
 
         c9->SaveAs("Plots/c9_Background&SignalFitsNeg.pdf");
 
@@ -385,6 +423,7 @@
         ErrA = ErrAMultB(Asym, NNeg-NPos, NNeg+NPos, ErrN, ErrN);
         cout<<"Devi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
         cout<<"Predicted Error =\t"<<TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
+        cout<<"Chi2 Pos and Neg\t "<<Chi2Pos/8<<'\t'<<Chi2Neg/8<<endl;
         cout<<"\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
         cout<<"**********************************************************************\n\n"<<endl;
