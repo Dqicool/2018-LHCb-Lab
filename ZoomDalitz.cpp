@@ -11,9 +11,13 @@
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
-    #define LIMZ 480
+    #define LIMZ 40
     #define BIN_WID 4
-    //#define LIMZ 120
+//Area Choice
+    #define AREA_1
+    //#define AREA_2
+    //#define AREA_3
+
 //3 Choosing Interests using #define
     //3.1 choose Fitting method
         #define BACKG_EXP
@@ -125,14 +129,22 @@
         Double_t Err2 = f2*(AErrA2+BErrB2);
         return TMath::Sqrt(Err2);
     }
-
 //7 main function
-    void fittingData(){
+    void ZoomDalitz(){
     //7.1 Declaration
         cout<<"\n\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
         cout<<"**********************************************************************\n"<<endl;
         //7.1.1 declare fitting function
+            #ifdef AREA_1 
+                cout<<"AREA Choice :\t 0-0.5  17-24"<<endl;
+            #endif
+            #ifdef AREA_2 
+                cout<<"AREA Choice :\t 1-3  5-15"<<endl;
+            #endif
+            #ifdef AREA_3 
+                cout<<"AREA Choice :\t 18-21, 5-10"<<endl;
+            #endif
             #ifdef BACKG_EXP
                 cout<<"BackGround fitting method :\tExp"<<endl;
             #endif
@@ -171,8 +183,18 @@
         //7.1.3 load chosen Data from file
             #ifdef DATA_ALL
                 TFile *f = new TFile("Output/DataAll.root");
-                TH1F *B0Pos = (TH1F*) f->Get("h_B_M0_Pos");
-                TH1F *B0Neg = (TH1F*) f->Get("h_B_M0_Neg");
+                #ifdef AREA_1
+                    TH1F *B0Pos = (TH1F*) f->Get("h_Zoom_1_Pos");
+                    TH1F *B0Neg = (TH1F*) f->Get("h_Zoom_1_Neg");
+                #endif
+                #ifdef AREA_2
+                    TH1F *B0Pos = (TH1F*) f->Get("h_Zoom_2_Pos");
+                    TH1F *B0Neg = (TH1F*) f->Get("h_Zoom_2_Neg");
+                #endif
+                #ifdef AREA_3
+                    TH1F *B0Pos = (TH1F*) f->Get("h_Zoom_3_Pos");
+                    TH1F *B0Neg = (TH1F*) f->Get("h_Zoom_3_Neg");
+                #endif
             #endif
             #ifdef DATA_DOWN
                 TFile *f = new TFile("Output/DataMagnetDown.root");
@@ -276,8 +298,8 @@
                 #endif
                 #ifdef KAON_GAUS
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO,"Kaon I");
-                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 10);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,20);
+                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 0);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,0);
 
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1,"Kaon x0");
                     ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 5258.0107);
