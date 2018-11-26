@@ -59,7 +59,7 @@ public:
 
 Double_t Scale(Double_t M0, Double_t Mpair)
 {
-    return 4*M0Pi*M0Pi/1e6+(Mpair*Mpair-4*M0Pi*M0Pi)/1e6*(M0B/M0)*(M0B/M0);
+    return 4*M0Pi*M0Pi/1e6 + (Mpair*Mpair-4*M0Pi*M0Pi)/1e6*(M0B/M0)*(M0B/M0);
 }
 
 void MyAnalysis::BookHistos()

@@ -12,10 +12,9 @@
     #define CANVASIZE1 600
     #define CANVASIZE2 400
 // Draw select
-    //#define DRAW_BAC
-    
-    //#define DRAW_COM
-    //#define DRAW_SIG
+    #define DRAW_BAC
+    #define DRAW_COM
+    #define DRAW_SIG
     #define DRAW_ASY
     #define DRAW_SIGNIF
 // Merge select
@@ -446,14 +445,14 @@
                 absSIGNIF->Draw("colz");
                 Err->SetAxisRange(0,1,"Z");
                 //Err->Draw("colz1");
+                c17->SaveAs("Plots/c17_Local_Asymmytry_Signif.pdf");
                 #endif
             #ifdef AUTO_MERGE
-            #define NUM_PER_CELL 100
-                TCanvas *c18 = new TCanvas("c18","",CANVASIZE1,CANVASIZE2);
-                AutoMerge(DalitzNegSig,0,0,60,120,NUM_PER_CELL);
-                                //DalitzNegSig->SetAxisRange(0,20,"Z");
-                DalitzNegSig->Draw("colz");
-
+                #define NUM_PER_CELL 100
+                    TCanvas *c18 = new TCanvas("c18","",CANVASIZE1,CANVASIZE2);
+                    AutoMerge(DalitzNegSig,0,0,60,120,NUM_PER_CELL);
+                    //DalitzNegSig->SetAxisRange(0,20,"Z");
+                    DalitzNegSig->Draw("colz");
             #endif
 
 

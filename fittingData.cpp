@@ -6,6 +6,7 @@
     #include <TMath.h>
     #include <TF1.h>
     #include <iostream>
+    #include "ErrorProp.hpp"
     using namespace std;
 
 //2 LIMIT
@@ -13,6 +14,7 @@
     #define LIMH 5.7e3
     #define LIMZ 480
     #define BIN_WID 4
+    #define NUM_BIN (int)((LIMH-LIML)/BIN_WID)
     //#define LIMZ 120
 //3 Choosing Interests using #define
     //3.1 choose Fitting method
@@ -30,36 +32,47 @@
 
         //3.1.A because double Gauss and Cruijff are the same but Alpha
             #ifdef SIGNAL_DOUBLE_GAUS
-            #define SIGNAL_CRUIJFF
+                #define SIGNAL_CRUIJFF
             #endif
-    //3.2 choosing data file
-        #define DATA_UP
-        //#define DATA_DOWN
-        //#define DATA_ALL
+//4 choosing data file
+    //#define DATA_UP
+    //#define DATA_DOWN
+    #define DATA_ALL
 
 //4 Quantity of Parameters
     #define NUM_PAR_BAC 2
-
+    #define NUM_FREE_PAR_BAC 2
     #ifdef SIGNAL_LORENTZ
         #define NUM_PAR_SIG 3
+        #define NUM_FREE_PAR_SIG 3
     #endif
     #ifdef SIGNAL_CRUIJFF
         #define NUM_PAR_SIG 6
+        #ifdef SIGNAL_DOUBLE_GAUS
+            #define NUM_FREE_PAR_SIG 4
+        #elif
+            #define NUM_FREE_PAR_SIG 6
+        #endif
     #endif
 
     #ifdef SHOULDER_GAUS
         #define NUM_PAR_SHO 3
+        #define NUM_FREE_PAR_SHO 2
     #endif
     #ifdef SHOULDER_LORENTZ
         #define NUM_PAR_SHO 3
+        #define NUM_FREE_PAR_SHO 2
     #endif
     #ifdef SHOULDER_ARGUS
         #define NUM_PAR_SHO 0 //TODO
     #endif
     #ifdef KAON_GAUS 
         #define NUM_PAR_KAON 3
+        #define NUM_FREE_PAR_KAON 1
     #endif
-    #define NUM_PAR NUM_PAR_BAC+NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON
+    #define NUM_PAR (NUM_PAR_BAC+NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON)
+    #define NUM_FREE_PAR (NUM_FREE_PAR_BAC+NUM_FREE_PAR_SHO+NUM_FREE_PAR_SIG+NUM_FREE_PAR_KAON)
+    #define DEGREE_FREEDOM  (NUM_BIN - NUM_FREE_PAR)
 
 
 //5 Define fitting function
@@ -107,24 +120,6 @@
         Double_t Combine(Double_t *x, Double_t *par){
             return Signal(x, par) + Shoulder(x,&par[NUM_PAR_SIG]) + BackGround(x, &par[NUM_PAR-NUM_PAR_KAON+1]) + KaonCorr(x,&par[NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON]);
         }
-//6 Error Propagation functions
-    Double_t ErrAPlusB(Double_t ErrA, Double_t ErrB)
-    {
-        Double_t Err2 = pow(ErrA,2)+pow(ErrB,2); 
-        return TMath::Sqrt(Err2);
-    }
-    Double_t ErrAMinuB(Double_t ErrA, Double_t ErrB)
-    {
-        return ErrAPlusB(ErrA,ErrB);
-    }
-    Double_t ErrAMultB(Double_t C , Double_t A, Double_t B, Double_t ErrA, Double_t ErrB)
-    {
-        Double_t f2 = pow(C,2);
-        Double_t AErrA2 = pow(ErrA/A,2);
-        Double_t BErrB2 = pow(ErrB/B,2);
-        Double_t Err2 = f2*(AErrA2+BErrB2);
-        return TMath::Sqrt(Err2);
-    }
 
 //7 main function
     void fittingData(){
@@ -367,22 +362,18 @@
             Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
             cout<<NPos<<endl;
             cout<<NNeg<<endl;
-            Double_t ErrNPos = ErrAMultB(NNPos,parPos[0]/BIN_WID, parPos[1]/BIN_WID,errPos[0]/BIN_WID, errPos[1]/BIN_WID);
-            Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0]/BIN_WID, parNeg[1]/BIN_WID,errNeg[0]/BIN_WID, errNeg[1]/BIN_WID);
+            Double_t ErrNPos = ErrAMultB(NNPos,parPos[0], parPos[1],errPos[0], errPos[1]);
+            Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1]);
         #endif
 
         #ifdef SIGNAL_CRUIJFF
             #ifdef SIGNAL_DOUBLE_GAUS
-                Double_t NPos = SigPos->Integral(LIML,LIMH)/BIN_WID;
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
-                Double_t ANPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
-                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
-                cout<<NPos<<'\t'<<ANPos<<endl;
-                cout<<NNeg<<'\t'<<ANNeg<<endl;
-                Double_t ErrSigPos = ErrAPlusB(errPos[1]/BIN_WID, errPos[3]/BIN_WID);
-                Double_t ErrSigNeg = ErrAPlusB(errNeg[1]/BIN_WID, errNeg[3]/BIN_WID);
-                Double_t ErrNPos = ErrAMultB(NPos, parPos[5]/BIN_WID, (parPos[3]+parPos[1])/BIN_WID, errPos[5]/BIN_WID, ErrSigPos);
-                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg);
+                Double_t NPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                Double_t NNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                Double_t ErrSigPos = ErrAPlusB(errPos[1], errPos[3]);
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1], errNeg[3]);
+                Double_t ErrNPos = ErrAMultB(NPos, parPos[5], (parPos[3]+parPos[1]), errPos[5], ErrSigPos);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5], (parNeg[3]+parNeg[1]), errNeg[5], ErrSigNeg);
             #else
             //TODO Numerical Method
             //!analytical, notgood,  Alpha tails has been ignored ,for double Gaussian it's good
@@ -397,20 +388,22 @@
                 Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
                 cout<<NPos<<'\t'<<ANPos<<endl;
                 cout<<NNeg<<'\t'<<ANNeg<<endl;
-                Double_t ErrSigPos = ErrAPlusB(errPos[1],errPos[3]);
-                Double_t ErrSigNeg = ErrAPlusB(errNeg[1],errNeg[3]);
-                Double_t ErrNPos = ErrAMultB(NPos, parPos[5], parPos[3]+parPos[1], errPos[5], ErrSigPos);
-                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5], parNeg[3]+parNeg[1], errNeg[5], ErrSigNeg);
+                Double_t ErrSigPos = ErrAPlusB(errPos[1]/BIN_WID, errPos[3]/BIN_WID);
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1]/BIN_WID, errNeg[3]/BIN_WID);
+                Double_t ErrNPos = ErrAMultB(NPos, parPos[5]/BIN_WID, (parPos[3]+parPos[1])/BIN_WID, errPos[5]/BIN_WID, ErrSigPos);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg);
             #endif
         #endif
         Double_t Asym = (NNeg-NPos)/(NNeg+NPos);
-        Double_t EffPos = 1/(1+NNeg/NPos);
-        Double_t ErrNPOverNN = ErrAMultB(NNeg/NPos,NNeg,NPos,ErrNNeg, ErrNPos);
-        Double_t ErrEffPos = ErrAMultB(1/(1+NNeg/NPos),1,(1+NNeg/NPos),0,ErrNPOverNN);
-        Double_t EffNeg = 1/(1+NPos/NNeg);
-        Double_t ErrNNOverNP = ErrAMultB(NPos/NNeg,NPos,NNeg,ErrNPos, ErrNNeg);
-        Double_t ErrEffNeg = ErrAMultB(EffNeg,1,(1+NPos/NNeg),0,ErrNNOverNP);
-        Double_t ErrA = ErrAPlusB(ErrEffNeg,ErrEffPos);
+        Double_t EffPos = NPos/(NNeg+NPos);
+        Double_t ErrNPDiviNN = ErrADiviB(NNeg/NPos,NNeg,NPos,ErrNNeg, ErrNPos);
+        Double_t ErrEffPos = ErrADiviB(EffPos,1,(1+NNeg/NPos),0,ErrNPDiviNN);
+
+        Double_t EffNeg = NNeg/(NNeg+NPos);
+        Double_t ErrNNDiviNP = ErrADiviB(NPos/NNeg,NPos,NNeg,ErrNPos, ErrNNeg);
+        Double_t ErrEffNeg = ErrADiviB(EffNeg,1,(1+NPos/NNeg),0,ErrNNDiviNP);
+
+        Double_t ErrA = 2*ErrEffNeg;
 
     //7.6 Output results
         cout<<"\n*******************************RESULTS********************************\n"<<endl;
@@ -419,10 +412,9 @@
         cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
         cout<<"Efficiency N- =\t"<<EffNeg<<" +- "<<ErrEffNeg<<endl;
         cout<<"Effi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
-
-        cout<<"Devi Glb Asym =\t"<<Asym<<" +- "<<ErrA<<endl;
         cout<<"Predicted Error =\t"<<TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg))<<endl;
-        cout<<"Chi2 Pos and Neg\t "<<Chi2Pos/131<<'\t'<<Chi2Neg/131<<endl;
+        cout<<"Chi2 Pos and Neg = \t "<<Chi2Pos/DEGREE_FREEDOM<<'\t'<<Chi2Neg/DEGREE_FREEDOM<<endl;
+        cout<<"Chi Squared Test   \t"<<TMath::Prob(Chi2Pos, DEGREE_FREEDOM)<<'\t'<<TMath::Prob(Chi2Neg, DEGREE_FREEDOM)<<endl;
         cout<<"\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
         cout<<"**********************************************************************\n\n"<<endl;
