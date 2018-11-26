@@ -9,6 +9,28 @@
 
 #define HEI 0.25 //0.25 0.5 1 2 4
 #define WID 0.25 //4
+//
+    //#define GLOBAL_SCALE
+    #define LOCAL_SCALE
+
+#ifdef GLOBAL_SCALE
+    Double_t Scale(Double_t M0, Double_t Mpair)
+    {
+        return 4*M0Pi*M0Pi/1e6 + (Mpair*Mpair-4*M0Pi*M0Pi)/1e6*(M0B/M0)*(M0B/M0);
+    }                                       
+#endif
+
+#ifdef LOCAL_SCALE
+    Double_t Scale(Double_t M0Bac, Double_t SigLimL, Double_t SigLimH, Double_t BacLimL, Double_t BacLimH, Double_t Mpair)
+    {
+        double PositBac = (M0Bac - BacLimL)/(BacLimH - BacLimL);
+        double M0Sig = SigLimL + (SigLimH-SigLimL) * PositBac;
+        double ScaleFactor = pow((M0Sig - M0Pi)/(M0Bac - M0Pi),2);
+        double res =  (4 * M0Pi * M0Pi / 1e6) + (Mpair * Mpair - 4 * M0Pi * M0Pi) / 1e6 * ScaleFactor;
+        //double res = Mpair * Mpair / 1e6 * ScaleFactor;
+        return res;
+    }
+#endif
 
 
 // This is the analysis class, which realises the generic Analysis
@@ -56,11 +78,6 @@ public:
     //Bool_t   Cut();
     void     Execute();
 };
-
-Double_t Scale(Double_t M0, Double_t Mpair)
-{
-    return 4*M0Pi*M0Pi/1e6 + (Mpair*Mpair-4*M0Pi*M0Pi)/1e6*(M0B/M0)*(M0B/M0);
-}
 
 void MyAnalysis::BookHistos()
 {
@@ -208,8 +225,14 @@ void MyAnalysis::Execute(){
                 if (pow(M0_B-M0B,2) < 1369)
 	                h_Dalitz_Pos_Com->Fill(ML*ML/1e6,MH*MH/1e6);
                 if(M0_B >5400 && M0_B<5918)
-                    h_Dalitz_Pos_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
-
+                {
+                    #ifdef GLOBAL_SCALE
+                        h_Dalitz_Pos_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
+                    #endif
+                    #ifdef LOCAL_SCALE
+                        h_Dalitz_Pos_Bac->Fill(Scale(M0_B,M0B-37,M0B+37,5400,5918,ML), Scale(M0_B,M0B-37,M0B+37,5400,5918,MH));
+                    #endif
+                }
                 if(MH*MH/1e6>17 && MH*MH/1e6<24)
                 {
                     if(ML*ML/1e6<0.5)
@@ -254,7 +277,14 @@ void MyAnalysis::Execute(){
                 if (pow(M0_B-M0B,2) < 1369)
 	                h_Dalitz_Neg_Com->Fill(ML*ML/1e6,MH*MH/1e6);
                 if(M0_B >5400 && M0_B<5918)
-                    h_Dalitz_Neg_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
+                {
+                    #ifdef GLOBAL_SCALE
+                        h_Dalitz_Neg_Bac->Fill(Scale(M0_B,ML),Scale(M0_B,MH));
+                    #endif
+                    #ifdef LOCAL_SCALE
+                        h_Dalitz_Neg_Bac->Fill(Scale(M0_B,M0B-37,M0B+37,5400,5918,ML), Scale(M0_B,M0B-37,M0B+37,5400,5918,MH));
+                    #endif
+                }
 
                 if(MH*MH/1e6>17 && MH*MH/1e6<24)
                 {
