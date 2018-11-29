@@ -15,16 +15,6 @@
     #define FITPOS
     #define FITNEG
 
-void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
-{
-    for( int i=0; i<NumSigPar; i++)  //column
-    {
-        for (int j = 0; j<NumSigPar;j++) //row
-        {
-            SigCov[i*NumSigPar+j] = ComCov[i*NumComPar+j];
-        }
-    }
-}
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
@@ -255,7 +245,7 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
                 ComPos->FixParameter(4,0);
                 #endif
             #endif
-            //Shoulder
+        //Shoulder
                 #ifdef SHOULDER_LORENTZ
                     ComPos->SetParName(NUM_PAR_SIG,"SHOULD I");
                     ComPos->SetParameter(NUM_PAR_SIG, 20);
@@ -283,21 +273,21 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
                     ComPos->FixParameter(NUM_PAR_SIG+1,5132);
 
                     ComPos->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");
-                    ComPos->SetParameter(NUM_PAR_SIG+2, 3.28215e+01);
+                    ComPos->SetParameter(NUM_PAR_SIG+2, 60);
                     ComPos->SetParLimits(NUM_PAR_SIG+2,0,100);
                 #endif
+            //Kaon
                 #ifdef KAON_GAUS
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO,"Kaon I");
                     ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 0);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,0);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,100);
 
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1,"Kaon x0");
-                    ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 5258.0107);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1,5258.0107,5258.0107);
+                    ComPos->FixParameter(NUM_PAR_SIG+NUM_PAR_SHO+1,5215.2);
 
                     ComPos->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+2,"Kaon Sig");
                     ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+2, 20);
-                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+2,0,20);
+                    ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+2,20,20);
                 #endif
         //7.4.3 Create Neg fitting obj
             TF1 *ComNeg = ComPos;

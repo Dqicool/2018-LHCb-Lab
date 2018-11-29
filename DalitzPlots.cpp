@@ -237,6 +237,39 @@
             return;
         }
     }
+//Chi2 test function
+    double BinnedChi2(TH2F *Pos, TH2F *Neg, int &ndf, int xll, int xhl, int yll, int yhl)
+    {
+        TH2F * Scp = (TH2F*)Neg->Clone("Scp");
+        double alpha = SumPartial(Pos, xll,yll,xhl,yhl)/SumPartial(Neg, xll,yll,xhl,yhl);
+        //cout<<alpha<<endl;
+        ndf = -1;
+        for (int i = xll;i<xhl;i++)
+        {
+            for (int j=yll;j<yhl;j++)
+            {
+                if (Pos->GetBinContent(i,j)== 0 || Neg->GetBinContent(i,j)== 0){
+                    Scp->SetBinContent(i,j,0);
+                }
+                else{
+                    //cout<<Pos->GetBinContent(i,j)<<'\t'<<Neg->GetBinContent(i,j)<<endl;
+                    double tmp = (Pos->GetBinContent(i,j)-alpha*Neg->GetBinContent(i,j))/sqrt(Pos->GetBinContent(i,j)+alpha*alpha*Neg->GetBinContent(i,j));
+                    cout<<Pos->GetBinContent(i,j)<<'\t'<<Neg->GetBinContent(i,j)<<'\t'<<tmp<<endl;
+                    Scp->SetBinContent(i,j,tmp);
+                    ndf++;
+                }
+            }
+        }
+        double chi2 = 0;
+        for (int i = xll;i<xhl;i++)
+        {
+            for (int j=yll;j<yhl;j++)
+            {
+                chi2 += pow(Scp->GetBinContent(i,j),2);
+            }
+        }
+        return chi2;
+    }
 // Main function
     void DalitzPlots(){
         //7.2 declare Data choice
@@ -364,7 +397,6 @@
                     NumB += NumAll->GetBinContent(i,j);
                 }
             } 
-            cout<<NumB<<endl;
 
             TH2F *NumMinus = (TH2F*)DalitzNegSig->Clone("NumMinus");
             NumMinus->Add(DalitzPosSig,-1);
@@ -376,8 +408,6 @@
                     NumA += NumMinus->GetBinContent(i,j);
                 }
             } 
-            cout<<NumA<<endl;
-            cout<<NumA/NumB<<endl;
             //Calculating Local Asymmetry
             TH2F *ASSY = (TH2F*)DalitzNegSig->GetAsymmetry(DalitzPosSig);
         //Drawing
@@ -438,15 +468,21 @@
             #ifdef DRAW_SIGNIF
                 TCanvas *c17 = new TCanvas("c17","",CANVASIZE1,CANVASIZE2);
                 TH2F* Err = GetHistErr(ASSY);
-                TH2F* SIGNIF = (TH2F*)ASSY->Clone("Signif of Asymm");
+                TH2F* SIGNIF = (TH2F*)ASSY->Clone("absSignif of Asymm");
                 SIGNIF->SetAxisRange(0,5,"Z");
                 TH2F *absSIGNIF = GetHistAbs(SIGNIF);
                 absSIGNIF->Divide(Err);
                 absSIGNIF->Draw("colz");
                 Err->SetAxisRange(0,1,"Z");
                 //Err->Draw("colz1");
-                c17->SaveAs("Plots/c17_Local_Asymmytry_Signif.pdf");
-                #endif
+                c17->SaveAs("Plots/c17_Local_Asymmytry_absSignif.pdf");
+
+                TCanvas *c18 = new TCanvas("c18","",CANVASIZE1,CANVASIZE2);
+                SIGNIF->Divide(Err);
+                SIGNIF->Draw("colz1");
+                SIGNIF->SetAxisRange(-5,5,"Z");
+                c18->SaveAs("Plots/c18_Local_Asymmytry_Signif.pdf");
+            #endif
             #ifdef AUTO_MERGE
                 #define NUM_PER_CELL 100
                     TCanvas *c18 = new TCanvas("c18","",CANVASIZE1,CANVASIZE2);
@@ -454,6 +490,8 @@
                     //DalitzNegSig->SetAxisRange(0,20,"Z");
                     DalitzNegSig->Draw("colz");
             #endif
-
-
+            int ndf;
+            double chi2 = BinnedChi2(DalitzPosSig,DalitzNegSig,ndf,1*4,3*4,5*4, 15*4);
+            cout<<chi2<<'\t'<<ndf<<endl;
+            cout<<TMath::Prob(chi2,ndf)<<endl;
     }

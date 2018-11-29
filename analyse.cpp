@@ -5,7 +5,14 @@
 #define M0Pi 139.570     //MeV
 #define M0D  1864.84     //MeV
 #define M0B  5279.29     //Mev
+//#define CUT 0.70
+//#define CUT 0.72
+// #define CUT 0.74
+//#define CUT 0.76
+// #define CUT 0.78
+//#define CUT 0.8
 #define CUT 0.79371886
+
 
 #define HEI 0.25 //0.25 0.5 1 2 4
 #define WID 0.25 //4

@@ -15,8 +15,8 @@
     #define BIN_WID 4
 //Area Choice
     //#define AREA_1
-    #define AREA_2
-    //#define AREA_3
+    //#define AREA_2
+    #define AREA_3
 
 //3 Choosing Interests using #define
     //3.1 choose Fitting method
