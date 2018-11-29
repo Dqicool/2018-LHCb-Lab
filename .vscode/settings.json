@@ -30,7 +30,8 @@
         "common.h": "c",
         "simd.h": "c",
         "tfile.h": "c",
-        "x86intrin.h": "c"
+        "x86intrin.h": "c",
+        "ostream": "cpp"
     },
     "files.autoSave": "afterDelay"
 }

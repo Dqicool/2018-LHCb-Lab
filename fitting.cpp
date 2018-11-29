@@ -12,19 +12,6 @@
     using namespace std;
     #define M0B  5279.29     //Mev
 
-    #define FITPOS
-    #define FITNEG
-
-void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
-{
-    for( int i=0; i<NumSigPar; i++)  //column
-    {
-        for (int j = 0; j<NumSigPar;j++) //row
-        {
-            SigCov[i*NumSigPar+j] = ComCov[i*NumComPar+j];
-        }
-    }
-}
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
@@ -51,9 +38,9 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
                 #define SIGNAL_CRUIJFF
             #endif
 //4 choosing data file
-    //#define DATA_UP
+    #define DATA_UP
     //#define DATA_DOWN
-    #define DATA_ALL
+    //#define DATA_ALL
 
 //4 Quantity of Parameters
     #define NUM_PAR_BAC 2
@@ -138,7 +125,7 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
         }
 
 //7 main function
-    void fittingData(){
+    void fittingPos(Double_t &Num, Double_t &Err){
     //7.1 Declaration
         cout<<"\n\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
@@ -299,18 +286,11 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
                     ComPos->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+2, 20);
                     ComPos->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+2,0,20);
                 #endif
-        //7.4.3 Create Neg fitting obj
-            TF1 *ComNeg = ComPos;
-            ComNeg->SetName("ComNeg");
-    #ifdef FITPOS
         //7.3 fitting Postive 
             cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
             TCanvas *c8 = new TCanvas("c8","",600,400);
             B0Pos->SetAxisRange(0,LIMZ,"Y");
             B0Pos->Fit(ComPos,"R");
-            TVirtualFitter * fitterPos = TVirtualFitter::GetFitter();
-            double * covMatComPos = fitterPos->GetCovarianceMatrix();
-            assert(fitterPos != 0);
             double Chi2Pos = ComPos->GetChisquare();        
             TF1 *BacPos      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
             TF1 *FourBodyPos = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
@@ -337,46 +317,7 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
             KaonCorrPos->Draw("SAME");
 
             c8->SaveAs("Plots/c8_Background&SignalFitsPos.pdf");
-    #endif
-    #ifdef FITNEG
-        //7.4 fitting Negtive
-            cout<<"\n*******************************NEGTIVE*******************************\n"<<endl;
-            TCanvas *c9 = new TCanvas("c9","",600,400);
-            B0Neg->SetAxisRange(0,LIMZ,"Y");
-            B0Neg->Fit(ComNeg,"R");
-            TVirtualFitter * fitterNeg = TVirtualFitter::GetFitter();
-            assert(fitterNeg != 0);
-            double * covMatComNeg = fitterNeg->GetCovarianceMatrix();
-            double Chi2Neg = ComNeg->GetChisquare();
-            //B0Neg->SetAxisRange(5100,5500);
 
-            TF1 *BacNeg      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
-            TF1 *FourBodyNeg = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
-            TF1 *SigNeg      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
-            TF1 *KaonCorrNeg = new TF1("KaonCorrNeg",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
-            SigNeg->SetLineColor(kBlue);
-            BacNeg->SetLineColor(kYellow);
-            FourBodyNeg->SetLineColor(kGreen);
-            KaonCorrNeg->SetLineColor(kMagenta);
-
-            Double_t parNeg[NUM_PAR];
-            Double_t *errNeg;
-            ComNeg->GetParameters(parNeg);
-            errNeg = (Double_t*)ComNeg->GetParErrors();
-            SigNeg->SetParameters(&parNeg[0]);
-            SigNeg->SetParErrors(&errNeg[0]);
-            FourBodyNeg->SetParameters(&parNeg[NUM_PAR_SIG]);
-            KaonCorrNeg->SetParameters(&parNeg[NUM_PAR_SIG+NUM_PAR_SHO]);
-            BacNeg->SetParameters(&parNeg[NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON]);
-            
-
-            SigNeg->Draw("same");
-            BacNeg->Draw("same");
-            FourBodyNeg->Draw("same");
-            KaonCorrNeg->Draw("SAME");
-
-            c9->SaveAs("Plots/c9_Background&SignalFitsNeg.pdf");
-    #endif
     //7.5 Error Calculating
         #ifdef SIGNAL_LORENTZ
             Double_t NNPos = parPos[0]*parPos[1]*TMath::Pi()/BIN_WID;
@@ -393,26 +334,11 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
 
         #ifdef SIGNAL_CRUIJFF
             #ifdef SIGNAL_DOUBLE_GAUS
-                #ifdef FITPOS
-                    Double_t NPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
-                    Double_t INPos = SigPos->Integral(LIML,LIMH)/BIN_WID;
-                    Double_t covMatSigPos[NUM_PAR_SIG*NUM_PAR_SIG];
-                    GetSigCov(covMatComPos,covMatSigPos,NUM_PAR,NUM_PAR_SIG);
-                    Double_t IErrNPos = SigPos->IntegralError(LIML,LIMH,parPos,covMatSigPos)/BIN_WID;
-                    Double_t IIErrNPos = ComPos->IntegralError(M0B-37, M0B+37,parPos, covMatComPos)/BIN_WID;
-                    Double_t ErrSigPos = ErrAPlusB(errPos[1], errPos[3], 0);
-                    Double_t ErrNPos = ErrAMultB(NPos, parPos[5], (parPos[3]+parPos[1]), errPos[5], ErrSigPos, 0);
-                #endif
-                #ifdef FITNEG
-                    Double_t NNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
-                    Double_t INNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
-                    Double_t covMatSigNeg[NUM_PAR_SIG*NUM_PAR_SIG];
-                    GetSigCov(covMatComNeg,covMatSigNeg,NUM_PAR,NUM_PAR_SIG);
-                    Double_t IErrNNeg = SigNeg->IntegralError(LIML,LIMH,parNeg,covMatSigNeg)/BIN_WID;
-                    Double_t IIErrNNeg = ComNeg->IntegralError(M0B-37, M0B+37,parNeg, covMatComNeg)/BIN_WID;
-                    Double_t ErrSigNeg = ErrAPlusB(errNeg[1], errNeg[3], 0);
-                    Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5], (parNeg[3]+parNeg[1]), errNeg[5], ErrSigNeg, 0);
-                #endif
+                Double_t NPos = parPos[5]*(parPos[3]+parPos[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                Double_t INPos = SigPos->Integral(LIML,LIMH)/BIN_WID;
+                Double_t IErrNPos = ComPos->IntegralError(M0B-55.5, M0B+55.5)/BIN_WID;
+                Double_t ErrSigPos = ErrAPlusB(errPos[1], errPos[3], 0);
+                Double_t ErrNPos = ErrAMultB(NPos, parPos[5], (parPos[3]+parPos[1]), errPos[5], ErrSigPos, 0);
             #else
             //TODO Numerical Method
             //!analytical, notgood,  Alpha tails has been ignored ,for double Gaussian it's good
@@ -433,56 +359,298 @@ void GetSigCov(Double_t *ComCov, Double_t *SigCov, int NumComPar, int NumSigPar)
                 Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg, 0);
             #endif
         #endif
-        #ifdef FITPOS
-            #ifdef FITNEG
-                Double_t Asym = (NNeg-NPos)/(NNeg+NPos);
-                Double_t EffPos = NPos/(NNeg+NPos);
-                Double_t ErrNPDiviNN = ErrADiviB(NNeg/NPos,NNeg,NPos,ErrNNeg, ErrNPos, 0);
-                Double_t ErrEffPos = ErrADiviB(EffPos,1,(1+NNeg/NPos),0,ErrNPDiviNN, 0);
 
-                Double_t EffNeg = NNeg/(NNeg+NPos);
-                Double_t ErrNNDiviNP = ErrADiviB(NPos/NNeg,NPos,NNeg,ErrNPos, ErrNNeg, 0);
-                Double_t ErrEffNeg = ErrADiviB(EffNeg,1,(1+NPos/NNeg),0,ErrNNDiviNP , 0);
 
-                Double_t ErrAsym = 2 * ErrEffNeg;
-                Double_t ErrAsymNoBac = TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg));
-                Double_t ErrffiNoBac = ErrAsymNoBac/2;
+    //7.6 Output results
+        cout<<"\n*******************************RESULTS********************************\n"<<endl;
+            cout<<"Number of B+  =\t"<<NPos<<" +- "<<ErrNPos<<endl;
+            cout<<"INumber of B+  =\t"<<INPos<<" +- "<<IErrNPos<<endl;
+            cout<<"Chi Squared Test+   \t"<<TMath::Prob(Chi2Pos, DEGREE_FREEDOM)<<endl;
+            cout<<"Chi2 + = \t "<<Chi2Pos/DEGREE_FREEDOM<<endl;
+
+
+        cout<<"\n**********************************************************************"<<endl;
+        cout<<"**********************************************************************"<<endl;
+        cout<<"**********************************************************************\n\n"<<endl;
+
+        Num = INPos;
+        Err = IErrNPos;
+    }
+    void fittingNeg(Double_t &Num, Double_t &Err){
+    //7.1 Declaration
+        cout<<"\n\n**********************************************************************"<<endl;
+        cout<<"**********************************************************************"<<endl;
+        cout<<"**********************************************************************\n"<<endl;
+        //7.1.1 declare fitting function
+            #ifdef BACKG_EXP
+                cout<<"BackGround fitting method :\tExp"<<endl;
+            #endif
+            #ifdef SIGNAL_CRUIJFF
+                #ifdef SIGNAL_DOUBLE_GAUS
+                    cout<<"Signal fitting method :\t\tDouble Gaussian"<<endl;
+                #else
+                    cout<<"Signal fitting method :\t\tCruijff"<<endl;
+                #endif
+            #endif
+            #ifdef SIGNAL_LORENTZ
+                cout<<"Signal fitting method :\t\tLorentz Peak"<<endl;
+            #endif
+            #ifdef SHOULDER_GAUS
+                cout<<"Shoulder fitting method :\tGaussian"<<endl;
+            #endif
+            #ifdef SHOULDER_ARGUS
+                cout<<"Shoulder fitting method :\tARGUS"<<endl;
+            #endif
+            #ifdef SHOULDER_LORENTZ
+                cout<<"Shoulder fitting method :\tLorentz"<<endl;
+            #endif
+            #ifdef KAON_GAUS
+                cout<<"Kaon Correction fitting method :\tGaussian"<<endl;
+            #endif
+        //7.1.2 declare Data choice
+            #ifdef DATA_ALL
+                cout<<"Using all Data"<<endl;
+            #endif
+            #ifdef DATA_UP
+                cout<<"Using Magnet Up Data"<<endl;
+            #endif
+            #ifdef DATA_DOWN
+                cout<<"Using Magnet Down Data"<<endl;
+            #endif
+        //7.1.3 load chosen Data from file
+            #ifdef DATA_ALL
+                TFile *f = new TFile("Output/DataAll.root");
+                TH1F *B0Neg = (TH1F*) f->Get("h_B_M0_Neg");
+            #endif
+            #ifdef DATA_DOWN
+                TFile *f = new TFile("Output/DataMagnetDown.root");
+                TH1F *B0Neg = (TH1F*) f->Get("h_B_M0_Neg");
+            #endif
+            #ifdef DATA_UP
+                TFile *f = new TFile("Output/DataMagnetUp.root");
+                TH1F *B0Neg = (TH1F*) f->Get("h_B_M0_Neg");
+            #endif
+
+
+        //7.1.4 Set up fitting object
+        //7.1.4.1 create Neg fitting obj
+            TF1 *ComNeg =      new TF1("ComNeg",   Combine,    LIML, LIMH, NUM_PAR);
+    //7.2 Configure fitting parametres
+        //Background
+            #ifdef BACKG_EXP
+                ComNeg->SetParName(NUM_PAR-NUM_PAR_KAON+1, "BackGr A");
+                ComNeg->SetParameter(NUM_PAR-NUM_PAR_KAON+1, -1.13347e-03);
+                ComNeg->SetParLimits(NUM_PAR-NUM_PAR_KAON+1, -1,0);
+
+                ComNeg->SetParName(NUM_PAR-NUM_PAR_KAON+2, "BackGr B");
+                ComNeg->SetParameter(NUM_PAR-NUM_PAR_KAON+2, 1.11271e+01);
+                ComNeg->SetParLimits(NUM_PAR-NUM_PAR_KAON+2, 0,20);
+            #endif
+        //Signal
+            #ifdef SIGNAL_LORENTZ 
+                ComNeg->SetParName(0,"Signal I");
+                ComNeg->SetParameter(0, 90);
+                ComNeg->SetParLimits(0,0,400);
+
+                ComNeg->SetParName(1,"Signal Gam");
+                ComNeg->SetParameter(1, 50);
+                ComNeg->SetParLimits(1,0,200);
+
+                ComNeg->SetParName(2,"Signal x0");
+                ComNeg->SetParameter(2, 5.28e3);
+                ComNeg->SetParLimits(2,5200,5400);
+            #endif
+            #ifdef SIGNAL_CRUIJFF 
+                ComNeg->SetParName(0, "Signal x0");
+                ComNeg->SetParameter(0, 5.28703e+03);
+                ComNeg->SetParLimits(0,5270,5290);
+
+                ComNeg->SetParName(1, "Signal SigL");
+                ComNeg->SetParameter(1, 1.91809e+01);
+                ComNeg->SetParLimits(1,0,100);
+
+                ComNeg->SetParName(2, "Signal AlpL");
+                ComNeg->SetParameter(2, 0);
+                ComNeg->SetParLimits(2,0,1);
+                
+                ComNeg->SetParName(3, "Signal SigR");
+                ComNeg->SetParameter(3, 1.58689e+01);
+                ComNeg->SetParLimits(3,0,100);
+                
+                ComNeg->SetParName(4, "Signal AlpR");
+                ComNeg->SetParameter(4, 0);
+                ComNeg->SetParLimits(4,0,1);
+                
+                ComNeg->SetParName(5, "Signal I");
+                ComNeg->SetParameter(5, 1.58195e+02);
+                ComNeg->SetParLimits(5,0,300);
+
+                #ifdef SIGNAL_DOUBLE_GAUS
+                ComNeg->FixParameter(2,0);
+                ComNeg->FixParameter(4,0);
+                #endif
+            #endif
+            //Shoulder
+                #ifdef SHOULDER_LORENTZ
+                    ComNeg->SetParName(NUM_PAR_SIG,"SHOULD I");
+                    ComNeg->SetParameter(NUM_PAR_SIG, 20);
+                    ComNeg->SetParLimits(NUM_PAR_SIG,0,50);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+1,"SHOULD Gam");
+                    ComNeg->SetParameter(NUM_PAR_SIG+1, 100);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+1,5,100);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+2,"SHOULD x0");
+                    ComNeg->SetParameter(NUM_PAR_SIG+2, 5100);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+2,4800,5100);//!THIS PARA SHOULD HAVE PHYSICS EXPLAIN
+                #endif
+                #ifdef SHOULDER_ARGUS
+                    //TODO
+                #endif
+                #ifdef SHOULDER_GAUS
+                    ComNeg->SetParName(NUM_PAR_SIG,"SHOULD I");
+                    ComNeg->SetParameter(NUM_PAR_SIG, 5.34273e+01);
+                    ComNeg->SetParLimits(NUM_PAR_SIG,0,200000);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+1,"SHOULD x0");
+                    // ComNeg->SetParameter(NUM_PAR_SIG+1, 5020);
+                    // ComNeg->SetParLimits(NUM_PAR_SIG+1,5020,5020);
+                    ComNeg->FixParameter(NUM_PAR_SIG+1,5132);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");
+                    ComNeg->SetParameter(NUM_PAR_SIG+2, 3.28215e+01);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+2,0,100);
+                #endif
+                #ifdef KAON_GAUS
+                    ComNeg->SetParName(NUM_PAR_SIG+NUM_PAR_SHO,"Kaon I");
+                    ComNeg->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO, 0);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO,0,0);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+1,"Kaon x0");
+                    ComNeg->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+1, 5258.0107);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+1,5258.0107,5258.0107);
+
+                    ComNeg->SetParName(NUM_PAR_SIG+NUM_PAR_SHO+2,"Kaon Sig");
+                    ComNeg->SetParameter(NUM_PAR_SIG+NUM_PAR_SHO+2, 20);
+                    ComNeg->SetParLimits(NUM_PAR_SIG+NUM_PAR_SHO+2,0,20);
+                #endif
+        //7.3 fitting Negtive 
+            cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
+            TCanvas *c8 = new TCanvas("c9","",600,400);
+            B0Neg->SetAxisRange(0,LIMZ,"Y");
+            B0Neg->Fit(ComNeg,"R");
+            double Chi2Neg = ComNeg->GetChisquare();        
+            TF1 *BacNeg      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
+            TF1 *FourBodyNeg = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
+            TF1 *SigNeg      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
+            TF1 *KaonCorrNeg = new TF1("KaonCorrNeg",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
+            SigNeg->SetLineColor(kBlue);
+            BacNeg->SetLineColor(kYellow);
+            FourBodyNeg->SetLineColor(kGreen);
+            KaonCorrNeg->SetLineColor(kMagenta);
+
+            Double_t parNeg[NUM_PAR];
+            Double_t *errNeg;
+            ComNeg->GetParameters(parNeg);
+            errNeg = (Double_t*)ComNeg->GetParErrors();
+            SigNeg->SetParameters(&parNeg[0]);
+            SigNeg->SetParErrors(&errNeg[0]);
+            FourBodyNeg->SetParameters(&parNeg[NUM_PAR_SIG]);
+            KaonCorrNeg->SetParameters(&parNeg[NUM_PAR_SIG+NUM_PAR_SHO]);
+            BacNeg->SetParameters(&parNeg[NUM_PAR_SIG+NUM_PAR_SHO+NUM_PAR_KAON]);
+
+            SigNeg->Draw("same");
+            BacNeg->Draw("same");
+            FourBodyNeg->Draw("same");
+            KaonCorrNeg->Draw("SAME");
+
+            c8->SaveAs("Plots/c9_Background&SignalFitsNeg.pdf");
+
+    //7.5 Error Calculating
+        #ifdef SIGNAL_LORENTZ
+            Double_t NNNeg = parNeg[0]*parNeg[1]*TMath::Pi()/BIN_WID;
+            Double_t NNNeg = parNeg[0]*parNeg[1]*TMath::Pi()/BIN_WID;
+            cout<<NNNeg<<endl;
+            cout<<NNNeg<<endl;
+            Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+            Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+            cout<<NNeg<<endl;
+            cout<<NNeg<<endl;
+            Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1], 0);
+            Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1],0);
+        #endif
+
+        #ifdef SIGNAL_CRUIJFF
+            #ifdef SIGNAL_DOUBLE_GAUS
+                Double_t NNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                Double_t INNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+                Double_t IErrNNeg = ComNeg->IntegralError(M0B-55.5, M0B+55.5)/BIN_WID;
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1], errNeg[3], 0);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5], (parNeg[3]+parNeg[1]), errNeg[5], ErrSigNeg, 0);
+            #else
+            //TODO Numerical Method
+            //!analytical, notgood,  Alpha tails has been ignored ,for double Gaussian it's good
+            /*
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH);
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH);
+                Double_t ErrNNeg = SigNeg->IntegralError(LIML,LIMH);//, parNeg, posPtr->GetCovarianceMatrix()->GetMatrixArray());
+                Double_t ErrNNeg = SigNeg->IntegralError(LIML,LIMH);//, parNeg, negPtr->GetCovarianceMatrix()->GetMatrixArray());*/
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                Double_t ANNeg = parNeg[5]*(parNeg[3]+parNeg[1])*sqrt(TMath::Pi()*2)/2/BIN_WID;
+                cout<<NNeg<<'\t'<<ANNeg<<endl;
+                cout<<NNeg<<'\t'<<ANNeg<<endl;
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1]/BIN_WID, errNeg[3]/BIN_WID, 0);
+                Double_t ErrSigNeg = ErrAPlusB(errNeg[1]/BIN_WID, errNeg[3]/BIN_WID, 0);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg, 0);
+                Double_t ErrNNeg = ErrAMultB(NNeg, parNeg[5]/BIN_WID, (parNeg[3]+parNeg[1])/BIN_WID, errNeg[5]/BIN_WID, ErrSigNeg, 0);
             #endif
         #endif
 
 
     //7.6 Output results
         cout<<"\n*******************************RESULTS********************************\n"<<endl;
-        #ifdef FITPOS
-            cout<<"Number of B+  =\t"<<NPos<<" +- "<<ErrNPos<<endl;
-            cout<<"INumber of B+  =\t"<<INPos<<" +- "<<IErrNPos<<endl;
-            cout<<"IINumber of B+  =\t"<<INPos<<" +- "<<IIErrNPos<<endl;
-            #ifdef FITNEG
-            cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
-            #endif
-            cout<<"Chi Squared Test+   \t"<<TMath::Prob(Chi2Pos, DEGREE_FREEDOM)<<endl;
-            cout<<"Chi2 + = \t "<<Chi2Pos/DEGREE_FREEDOM<<endl;
-        #endif
-        #ifdef FITNEG
-            cout<<"Number of B-  =\t"<<NNeg<<" +- "<<ErrNNeg<<endl;
-            cout<<"INumber of B-  =\t"<<INNeg<<" +- "<<IErrNNeg<<endl;
-            cout<<"IINumber of B-  =\t"<<INNeg<<" +- "<<IIErrNNeg<<endl;
-        #ifdef FITPOS
-            cout<<"Efficiency N- =\t"<<EffNeg<<" +- "<<ErrEffNeg<<endl;
-        #endif
-
-        cout<<"Chi Squared Test-   \t"<<TMath::Prob(Chi2Neg, DEGREE_FREEDOM)<<endl;
-        cout<<"Chi2 - = "<<'\t'<<Chi2Neg/DEGREE_FREEDOM<<endl;
-        #endif
-        #ifdef FITNEG
-        #ifdef FITPOS
-        cout<<"Effi Glb Asym =\t"<<Asym<<" +- "<<ErrAsym<<endl;
-        cout<<"Predicted Error =\t"<<ErrAsymNoBac<<endl;
-        #endif
-        #endif
+            cout<<"Number of B+  =\t"<<NNeg<<" +- "<<ErrNNeg<<endl;
+            cout<<"INumber of B+  =\t"<<INNeg<<" +- "<<IErrNNeg<<endl;
+            cout<<"Chi Squared Test+   \t"<<TMath::Prob(Chi2Neg, DEGREE_FREEDOM)<<endl;
+            cout<<"Chi2 + = \t "<<Chi2Neg/DEGREE_FREEDOM<<endl;
 
 
         cout<<"\n**********************************************************************"<<endl;
         cout<<"**********************************************************************"<<endl;
         cout<<"**********************************************************************\n\n"<<endl;
+
+        Num = INNeg;
+        Err = IErrNNeg;
+    }
+    void fitting()
+    {
+        Double_t NPos = 0;
+        Double_t NNeg = 0; 
+        Double_t ErrNPos = 0;
+        Double_t ErrNNeg = 0; 
+        fittingPos(NPos, ErrNPos);
+        fittingNeg(NNeg, ErrNNeg);
+        Double_t Asym = (NNeg-NPos)/(NNeg+NPos);
+        Double_t EffPos = NPos/(NNeg+NPos);
+        Double_t ErrNPDiviNN = ErrADiviB(NNeg/NPos,NNeg,NPos,ErrNNeg, ErrNPos, 0);
+        Double_t ErrEffPos = ErrADiviB(EffPos,1,(1+NNeg/NPos),0,ErrNPDiviNN, 0);
+
+        Double_t EffNeg = NNeg/(NNeg+NPos);
+        Double_t ErrNNDiviNP = ErrADiviB(NPos/NNeg,NPos,NNeg,ErrNPos, ErrNNeg, 0);
+        Double_t ErrEffNeg = ErrADiviB(EffNeg,1,(1+NPos/NNeg),0,ErrNNDiviNP , 0);
+
+        Double_t ErrAsym = 2 * ErrEffNeg;
+        Double_t ErrAsymNoBac = TMath::Sqrt((1-Asym*Asym)/(NPos+NNeg));
+        Double_t ErrffiNoBac = ErrAsymNoBac/2;
+
+        cout<<"Number of B+  =\t"<<NPos<<" +- "<<ErrNPos<<endl;
+        cout<<"Number of B-  =\t"<<NNeg<<" +- "<<ErrNNeg<<endl;
+
+        cout<<"Efficiency N+ =\t"<<EffPos<<" +- "<<ErrEffPos<<endl;
+        cout<<"Efficiency N- =\t"<<EffNeg<<" +- "<<ErrEffNeg<<endl;
+
+        cout<<"Effi Glb Asym =\t"<<Asym<<" +- "<<ErrAsym<<endl;
+        cout<<"Predicted Error =\t"<<ErrAsymNoBac<<endl;
     }
