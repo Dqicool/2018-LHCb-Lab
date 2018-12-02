@@ -15,7 +15,7 @@
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
-    #define LIMZ 480
+    #define LIMZ 420
     #define BIN_WID 4
     #define NUM_BIN (int)((LIMH-LIML)/BIN_WID)
     #define KaonH 0
@@ -296,18 +296,19 @@
                     #endif
             //7.3 fitting Postive 
                 cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
-                TCanvas *c8 = new TCanvas("c8","",600,400);
+                TCanvas *c8 = new TCanvas("c8","",500,600);
                 B0Pos->SetAxisRange(0,LIMZ,"Y");
-                B0Pos->Fit(ComPos,"R");
+                B0Pos->SetAxisRange(LIML,5500);
+                B0Pos->Fit(ComPos,"R","E");
                 double Chi2Pos = ComPos->GetChisquare();        
                 TF1 *BacPos      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
                 TF1 *FourBodyPos = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
                 TF1 *SigPos      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
                 TF1 *KaonCorrPos = new TF1("KaonCorrPos",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
-                SigPos->SetLineColor(kBlue);
-                BacPos->SetLineColor(kYellow);
+                SigPos->SetLineColor(kCyan-3);
+                BacPos->SetLineColor(kYellow-2);
                 FourBodyPos->SetLineColor(kGreen);
-                KaonCorrPos->SetLineColor(kMagenta);
+                KaonCorrPos->SetLineColor(kBlack);
 
                 Double_t parPos[NUM_PAR];
                 Double_t *errPos;
@@ -328,16 +329,9 @@
 
         //7.5 Error Calculating
             #ifdef SIGNAL_LORENTZ
-                Double_t NNPos = parPos[0]*parPos[1]*TMath::Pi()/BIN_WID;
-                Double_t NNNeg = parNeg[0]*parNeg[1]*TMath::Pi()/BIN_WID;
-                cout<<NNPos<<endl;
-                cout<<NNNeg<<endl;
-                Double_t NPos = SigPos->Integral(LIML,LIMH)/BIN_WID;
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
-                cout<<NPos<<endl;
-                cout<<NNeg<<endl;
-                Double_t ErrNPos = ErrAMultB(NNPos,parPos[0], parPos[1],errPos[0], errPos[1], 0);
-                Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1],0);
+                Double_t INPos = SigPos->Integral(LIML,LIMH)/BIN_WID;
+                Double_t IErrNPos = ComPos->IntegralError(M0B-55.5, M0B+55.5)/BIN_WID;
+
             #endif
 
             #ifdef SIGNAL_CRUIJFF
@@ -539,18 +533,19 @@
                     #endif
             //7.3 fitting Negtive 
                 cout<<"\n*******************************Negative*******************************\n"<<endl;
-                TCanvas *c8 = new TCanvas("c9","",600,400);
+                TCanvas *c8 = new TCanvas("c9","",500,600);
                 B0Neg->SetAxisRange(0,LIMZ,"Y");
-                B0Neg->Fit(ComNeg,"R");
+                B0Neg->SetAxisRange(LIML,5500);
+                B0Neg->Fit(ComNeg,"R","E");
                 double Chi2Neg = ComNeg->GetChisquare();        
                 TF1 *BacNeg      = new TF1("Bac",   BackGround, LIML, LIMH, NUM_PAR_BAC);
                 TF1 *FourBodyNeg = new TF1("4Body", Shoulder,   LIML, LIMH, NUM_PAR_SHO); 
                 TF1 *SigNeg      = new TF1("Sig",   Signal,     LIML, LIMH, NUM_PAR_SIG);
                 TF1 *KaonCorrNeg = new TF1("KaonCorrNeg",KaonCorr,LIML, LIMH, NUM_PAR_KAON);
-                SigNeg->SetLineColor(kBlue);
-                BacNeg->SetLineColor(kYellow);
+                SigNeg->SetLineColor(kCyan-3);
+                BacNeg->SetLineColor(kYellow-2);
                 FourBodyNeg->SetLineColor(kGreen);
-                KaonCorrNeg->SetLineColor(kMagenta);
+                KaonCorrNeg->SetLineColor(kBlack);
 
                 Double_t parNeg[NUM_PAR];
                 Double_t *errNeg;
@@ -571,16 +566,8 @@
 
         //7.5 Error Calculating
             #ifdef SIGNAL_LORENTZ
-                Double_t NNNeg = parNeg[0]*parNeg[1]*TMath::Pi()/BIN_WID;
-                Double_t NNNeg = parNeg[0]*parNeg[1]*TMath::Pi()/BIN_WID;
-                cout<<NNNeg<<endl;
-                cout<<NNNeg<<endl;
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
-                Double_t NNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
-                cout<<NNeg<<endl;
-                cout<<NNeg<<endl;
-                Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1], 0);
-                Double_t ErrNNeg = ErrAMultB(NNNeg,parNeg[0], parNeg[1],errNeg[0], errNeg[1],0);
+                Double_t INNeg = SigNeg->Integral(LIML,LIMH)/BIN_WID;
+                Double_t IErrNNeg = ComNeg->IntegralError(M0B-55.5, M0B+55.5)/BIN_WID;
             #endif
 
             #ifdef SIGNAL_CRUIJFF
@@ -607,10 +594,9 @@
 
         //7.6 Output results
             cout<<"\n*******************************RESULTS********************************\n"<<endl;
-                cout<<"Number of B+  =\t"<<INNeg<<" +- "<<IErrNNeg<<endl;
-                cout<<"INumber of B+  =\t"<<INNeg<<" +- "<<IErrNNeg<<endl;
-                cout<<"Chi Squared Test+   \t"<<TMath::Prob(Chi2Neg, DEGREE_FREEDOM)<<endl;
-                cout<<"Chi2 + = \t "<<Chi2Neg/DEGREE_FREEDOM<<endl;
+                cout<<"INumber of B-  =\t"<<INNeg<<" +- "<<IErrNNeg<<endl;
+                cout<<"Chi Squared Test-   \t"<<TMath::Prob(Chi2Neg, DEGREE_FREEDOM)<<endl;
+                cout<<"Chi2 - = \t "<<Chi2Neg/DEGREE_FREEDOM<<endl;
 
 
             cout<<"\n**********************************************************************"<<endl;

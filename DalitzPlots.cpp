@@ -240,6 +240,7 @@
 //Chi2 test function
     double BinnedChi2(TH2F *Pos, TH2F *Neg, int &ndf, int xll, int xhl, int yll, int yhl)
     {
+        
         TH2F * Scp = (TH2F*)Neg->Clone("Scp");
         double alpha = SumPartial(Pos, xll,yll,xhl,yhl)/SumPartial(Neg, xll,yll,xhl,yhl);
         //cout<<alpha<<endl;
@@ -491,7 +492,7 @@
                     DalitzNegSig->Draw("colz");
             #endif
             int ndf;
-            double chi2 = BinnedChi2(DalitzPosSig,DalitzNegSig,ndf,1*4,3*4,5*4, 15*4);
+            double chi2 = BinnedChi2(DalitzPosSig,DalitzNegSig,ndf,0*4,15*4,0*4, 30*4);
             cout<<chi2<<'\t'<<ndf<<endl;
             cout<<TMath::Prob(chi2,ndf)<<endl;
     }
