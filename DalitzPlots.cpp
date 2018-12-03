@@ -9,8 +9,8 @@
     #include <iostream>
 //Canvasize
     using namespace std;
-    #define CANVASIZE1 600
-    #define CANVASIZE2 400
+    #define CANVASIZE1 1200
+    #define CANVASIZE2 800
 // Draw select
     #define DRAW_BAC
     #define DRAW_COM
@@ -327,7 +327,7 @@
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0,0.25, 10,13);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0,0.25, 13,17);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0,0.25, 17,21);
-                MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0,0.25, 21,25.5);
+                MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0,0.25, 21,25.75);
 
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0.25,0.5, 23,26.5);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  0.25,0.5, 17,23);
@@ -380,7 +380,7 @@
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  5,10,18,21);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  7,11.5,17,18);
 
-                MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  7,13,15,17);
+                MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  7,13.25,15,17);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,14,13.75,15);
                 MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,13.75,11,13.75);
                 //MergeBins(DalitzPosSig, DalitzNegSig, DalitzPosBac, DalitzPosCom, DalitzNegBac, DalitzNegCom,  8.25,14,11,17);
