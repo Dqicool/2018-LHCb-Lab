@@ -12,6 +12,9 @@
     using namespace std;
     #define M0B  5279.29     //Mev
 
+    #define SHOX0POS 5050
+    #define SHOX0NEG 5132
+
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
@@ -267,13 +270,13 @@
 
                         ComPos->SetParName(NUM_PAR_SIG+1,"SHOULD x0");
                         #ifdef DATA_ALL
-                            ComPos->FixParameter(NUM_PAR_SIG+1,5132);
+                            ComPos->FixParameter(NUM_PAR_SIG+1,SHOX0POS);
                         #endif
                         #ifdef DATA_UP
-                            ComPos->FixParameter(NUM_PAR_SIG+1,5132);
+                            ComPos->FixParameter(NUM_PAR_SIG+1,SHOX0POS);
                         #endif
                         #ifdef DATA_DOWN
-                            ComPos->FixParameter(NUM_PAR_SIG+1,5132);
+                            ComPos->FixParameter(NUM_PAR_SIG+1,SHOX0POS);
                         #endif
 
 
@@ -506,13 +509,13 @@
                         // ComNeg->SetParameter(NUM_PAR_SIG+1, 5020);
                         // ComNeg->SetParLimits(NUM_PAR_SIG+1,5020,5020);
                         #ifdef DATA_ALL
-                            ComNeg->FixParameter(NUM_PAR_SIG+1,5050);
+                            ComNeg->FixParameter(NUM_PAR_SIG+1,SHOX0NEG);
                         #endif
                         #ifdef DATA_UP
-                            ComNeg->FixParameter(NUM_PAR_SIG+1,5055);
+                            ComNeg->FixParameter(NUM_PAR_SIG+1,SHOX0NEG);
                         #endif
                         #ifdef DATA_DOWN
-                            ComNeg->FixParameter(NUM_PAR_SIG+1,5050);
+                            ComNeg->FixParameter(NUM_PAR_SIG+1,SHOX0NEG);
                         #endif
 
                         ComNeg->SetParName(NUM_PAR_SIG+2,"SHOULD Sig");

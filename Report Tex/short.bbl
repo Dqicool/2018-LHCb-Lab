@@ -2,7 +2,13 @@
 
 \bibitem{LHCb}
 A.~A. Alves~Jr. et~al.
-\newblock The lhcb detector at the lhc,.
-\newblock {\em JINST 3 (2008) S08005.}
+\newblock The lhcb detector at the lhc.
+\newblock {\em \href{http://dx.doi.org/10.1088/1748-0221/3/08/S08005}{JINST 3
+  (2008) S08005.}}
+
+\bibitem{SM}
+Tom~W.B. Kibble.
+\newblock The standard model of particle physics.
+\newblock {\em \href{https://arxiv.org/abs/1412.4094}{arXiv:1412.4094.}}
 
 \end{thebibliography}
