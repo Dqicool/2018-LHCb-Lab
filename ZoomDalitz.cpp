@@ -11,7 +11,7 @@
 //2 LIMIT
     #define LIML 5.13e3
     #define LIMH 5.7e3
-    #define LIMZ 40
+    #define LIMZ 50
     #define BIN_WID 4
 //Area Choice
     //#define AREA_1
@@ -316,7 +316,7 @@
         cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
         TCanvas *c8 = new TCanvas("c8","",600,400);
         B0Pos->SetAxisRange(0,LIMZ,"Y");
-        B0Pos->Fit(ComPos,"R");
+        B0Pos->Fit(ComPos,"RE");
         double Chi2Pos = ComPos->GetChisquare();
         //B0Pos->SetAxisRange(5100,5500);
         
@@ -349,7 +349,7 @@
         cout<<"\n*******************************NEGTIVE*******************************\n"<<endl;
         TCanvas *c9 = new TCanvas("c9","",600,400);
         B0Neg->SetAxisRange(0,LIMZ,"Y");
-        B0Neg->Fit(ComNeg,"R");
+        B0Neg->Fit(ComNeg,"RE");
         double Chi2Neg = ComNeg->GetChisquare();
         //B0Neg->SetAxisRange(5100,5500);
 

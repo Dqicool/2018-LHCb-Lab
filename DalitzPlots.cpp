@@ -28,7 +28,8 @@
 // Merge func 
     void MergeBins(TH2F* Histo1, TH2F* Histo2, TH2F* Histo3, TH2F* Histo4,TH2F* Histo5,TH2F* Histo6, double x, double w, double y, double h)
     {
-        int xx = 4*x+1; int yy = 4*y+1; int ww = 4*(w-x); int hh = 4*(h-y);
+        int xx = 4*x+1; int yy = 4*y+1; 
+        int ww = 4*(w-x); int hh = 4*(h-y);
         Double_t sum1 = 0, avg1;
         Double_t sum2 = 0, avg2;
         Double_t sum3 = 0, avg3;
@@ -59,6 +60,7 @@
                 sumErr6+= pow(Histo6->GetBinError(i,j),2);
             }
         }
+
         avg1 = sum1/ww/hh;
         avg2 = sum2/ww/hh;
         avg3 = sum3/ww/hh;
@@ -71,6 +73,9 @@
         avgErr4 = sqrt(sumErr4)/ww/hh;
         avgErr5 = sqrt(sumErr5)/ww/hh;
         avgErr6 = sqrt(sumErr6)/ww/hh;
+
+        ww = 4*(w-x); 
+        hh = 4*(h-y);
 
         for (int i = xx; i < xx+ww; i++)
         {
@@ -243,7 +248,6 @@
         
         TH2F * Scp = (TH2F*)Neg->Clone("Scp");
         double alpha = SumPartial(Pos, xll,yll,xhl,yhl)/SumPartial(Neg, xll,yll,xhl,yhl);
-        //cout<<alpha<<endl;
         ndf = -1;
         for (int i = xll;i<xhl;i++)
         {
@@ -269,6 +273,7 @@
                 chi2 += pow(Scp->GetBinContent(i,j),2);
             }
         }
+        cout<<SumPartial(Pos, xll,yll,xhl,yhl)<<'\t'<<SumPartial(Neg, xll,yll,xhl,yhl)<<endl;
         return chi2;
     }
 // Main function
@@ -443,13 +448,13 @@
 
             #ifdef DRAW_SIG
                 TCanvas *c12 = new TCanvas("c12","",CANVASIZE1,CANVASIZE2);
-                DalitzPosSig->SetAxisRange(0,5,"Z");
+                //DalitzPosSig->SetAxisRange(-5,5,"Z");
                 DalitzPosSig->Draw("colz");
                 //DalitzPosSig->Draw("TEXT SAME");
                 c12->SaveAs("Plots/c12_DalitzPlot_Pos_Sig.pdf");
 
                 TCanvas *c15 = new TCanvas("c15","",CANVASIZE1,CANVASIZE2);
-                DalitzNegSig->SetAxisRange(0,5,"Z");
+                //DalitzNegSig->SetAxisRange(0,5,"Z");
                 DalitzNegSig->Draw("colz");
                 //DalitzNegSig->Draw("TEXT SAME");
                 c15->SaveAs("Plots/c15_DalitzPlot_Pos_Sig.pdf");
@@ -462,7 +467,6 @@
                 ASSY->Draw("colz1");
                 //ASSY->Draw("TEXT SAME");
                 //ASSY->SetBarOffset(0.2);
-                //NumMinus->SetBarOffset(-0.2);
                 //NumMinus->Draw("SAME TEXT ");
                 c16->SaveAs("Plots/c16_Local_Asymmytry.pdf");
             #endif

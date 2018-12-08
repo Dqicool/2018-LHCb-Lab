@@ -1,14 +1,29 @@
 \begin{thebibliography}{1}
 
-\bibitem{LHCb}
-A.~A. Alves~Jr. et~al.
+\bibitem{1748-0221-3-08-S08005}
+The~LHCb Collaboration and A~Augusto~Alves Jr.
 \newblock The lhcb detector at the lhc.
-\newblock {\em \href{http://dx.doi.org/10.1088/1748-0221/3/08/S08005}{JINST 3
-  (2008) S08005.}}
+\newblock {\em Journal of Instrumentation}, 3(08):S08005, 2008.
 
-\bibitem{SM}
-Tom~W.B. Kibble.
-\newblock The standard model of particle physics.
-\newblock {\em \href{https://arxiv.org/abs/1412.4094}{arXiv:1412.4094.}}
+\bibitem{1412.4094}
+Tom W.~B. Kibble.
+\newblock The standard model of particle physics, 2014, arXiv:1412.4094.
+
+\bibitem{1310.4740}
+LHCb collaboration and R.~Aaij.
+\newblock Measurement of cp violation in the phase space of $b^{\pm}
+  \rightarrow k^{+} k^{-} \pi^{\pm}$ and $b^{\pm} \rightarrow \pi^{+} \pi^{-}
+  \pi^{\pm}$ decays.
+\newblock 2013, arXiv:1310.4740.
+
+\bibitem{Labsc}
+J.~Gutierrez. M.~Gersabeck, C.~Parkes.
+\newblock Measuring matter antimatter asymmetries at the large hadron collider.
+\newblock 2015.
+
+\bibitem{1211.6759}
+M.~Adinolfi.
+\newblock Performance of the lhcb rich detector at the lhc.
+\newblock 2012, arXiv:1211.6759.
 
 \end{thebibliography}

@@ -33,5 +33,5 @@
         "x86intrin.h": "c",
         "ostream": "cpp"
     },
-    "files.autoSave": "afterDelay"
+    "files.autoSave": "onFocusChange"
 }

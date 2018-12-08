@@ -3,11 +3,11 @@
 #include"ErrorProp.hpp"
 using namespace std;
 
-#define EFFI_UP_POS  0.375813
+#define EFFI_UP_POS  0.376192// +- 0.0400368
 //!just coincident because when we change the shoulder position it changes drastically, 0.42 say.
 
-#define EFFI_DOWN_POS  0.488317
-#define Err_Asymm 0.0226747
+#define EFFI_DOWN_POS  0.493563// +- 0.0154847
+#define Err_Asymm 0.0229557
 
 
 void Efficiencies()
