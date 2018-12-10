@@ -118,6 +118,12 @@ INPUT GA.png
 INPUT ./GA.png
 INPUT ./GA.png
 INPUT /usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+INPUT LocalAS.png
+INPUT ./LocalAS.png
+INPUT ./LocalAS.png
+INPUT ZoomFinal.png
+INPUT ./ZoomFinal.png
+INPUT ./ZoomFinal.png
 INPUT short.bbl
 INPUT short.bbl
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmti12.tfm

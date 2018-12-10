@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex short"] 1544276869 "short.aux" "short.bbl" "short" 1544283232
+["bibtex short"] 1544449285 "short.aux" "short.bbl" "short" 1544449369
   "/Users/dqixol/Library/texmf/bibtex/bst/hunsrt.bst" 869616673 17394 143d0bbfd676adb0fe1391c9e9555c96 ""
-  "biblio.bib" 1544040961 1590 a686991eb8eb7f3308fa726ddb0198c6 ""
-  "short.aux" 1544283232 1791 6405987045614068b8ab79efd096c366 ""
+  "biblio.bib" 1544449241 2143 55c66b5a76ab236d548a0886c5853e77 ""
+  "short.aux" 1544449369 2233 cb27cbd2abae623ffd0e5875c7987080 ""
   (generated)
-  "short.bbl"
   "short.blg"
-["pdflatex"] 1544283230 "/Users/dqixol/Documents/LHCb/Report Tex/short.tex" "short.pdf" "short" 1544283232
-  "/Users/dqixol/Documents/LHCb/Report Tex/short.tex" 1544283230 8298 8aab26f8973c175f4302b125b89fa114 ""
+  "short.bbl"
+["pdflatex"] 1544449365 "/Users/dqixol/Documents/LHCb/Report Tex/short.tex" "short.pdf" "short" 1544449369
+  "/Users/dqixol/Documents/LHCb/Report Tex/short.tex" 1544449365 10510 65ba8b6adccfa285ab31794f6cf8e737 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1480098698 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1480098698 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -88,13 +88,15 @@
   "/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1523934492 2717033 f61a5287d9c22a39a74f1979fe3f905c ""
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1541634419 4220280 e3c819c7de1cb80fd2eaceebf0718cd9 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
-  "GA.png" 1544107199 387878 552da834a1b0a368421d454336f93fbb ""
-  "short.aux" 1544283232 1791 6405987045614068b8ab79efd096c366 ""
-  "short.bbl" 1544276870 879 c976030060f515a1dc9d96223e839cbe "bibtex short"
-  "short.out" 1544283232 249 5bf80ca040104f9a255ca0570afd34b5 ""
-  "short.tex" 1544283230 8298 8aab26f8973c175f4302b125b89fa114 ""
+  "GA.png" 1544314835 944895 7e99b28af5281cc2325398abf3751e6e ""
+  "LocalAS.png" 1544291220 250732 46cc9121773d967b191dab915f5df49c ""
+  "ZoomFinal.png" 1544310327 1933842 8283635359ed68d9df12e52ec3449506 ""
+  "short.aux" 1544449369 2233 cb27cbd2abae623ffd0e5875c7987080 ""
+  "short.bbl" 1544449285 935 d155a8e588578d054e0fe8e07db5d4b5 "bibtex short"
+  "short.out" 1544449369 249 5bf80ca040104f9a255ca0570afd34b5 ""
+  "short.tex" 1544449365 10510 65ba8b6adccfa285ab31794f6cf8e737 ""
   (generated)
-  "short.out"
-  "short.aux"
   "short.pdf"
+  "short.aux"
   "short.log"
+  "short.out"

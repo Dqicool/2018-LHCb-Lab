@@ -314,9 +314,10 @@
             ComNeg->SetName("ComNeg");
     //7.3 fitting Postive 
         cout<<"\n*******************************POSITIVE*******************************\n"<<endl;
-        TCanvas *c8 = new TCanvas("c8","",600,400);
+        TCanvas *c8 = new TCanvas("c8","",400,400);
         B0Pos->SetAxisRange(0,LIMZ,"Y");
-        B0Pos->Fit(ComPos,"RE");
+        B0Pos->SetAxisRange(LIML,5500);
+        B0Pos->Fit(ComPos,"R","E");
         double Chi2Pos = ComPos->GetChisquare();
         //B0Pos->SetAxisRange(5100,5500);
         
@@ -347,9 +348,10 @@
 
     //7.4 fitting Negtive
         cout<<"\n*******************************NEGTIVE*******************************\n"<<endl;
-        TCanvas *c9 = new TCanvas("c9","",600,400);
+        TCanvas *c9 = new TCanvas("c9","",400,400);
         B0Neg->SetAxisRange(0,LIMZ,"Y");
-        B0Neg->Fit(ComNeg,"RE");
+        B0Neg->SetAxisRange(LIML,5500);
+        B0Neg->Fit(ComNeg,"R","E");
         double Chi2Neg = ComNeg->GetChisquare();
         //B0Neg->SetAxisRange(5100,5500);
 

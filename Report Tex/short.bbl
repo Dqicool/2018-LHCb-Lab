@@ -1,20 +1,9 @@
 \begin{thebibliography}{1}
 
 \bibitem{1748-0221-3-08-S08005}
-The~LHCb Collaboration and A~Augusto~Alves Jr.
+et.~al. A~Augusto Alves~Jr.
 \newblock The lhcb detector at the lhc.
 \newblock {\em Journal of Instrumentation}, 3(08):S08005, 2008.
-
-\bibitem{1412.4094}
-Tom W.~B. Kibble.
-\newblock The standard model of particle physics, 2014, arXiv:1412.4094.
-
-\bibitem{1310.4740}
-LHCb collaboration and R.~Aaij.
-\newblock Measurement of cp violation in the phase space of $b^{\pm}
-  \rightarrow k^{+} k^{-} \pi^{\pm}$ and $b^{\pm} \rightarrow \pi^{+} \pi^{-}
-  \pi^{\pm}$ decays.
-\newblock 2013, arXiv:1310.4740.
 
 \bibitem{Labsc}
 J.~Gutierrez. M.~Gersabeck, C.~Parkes.
@@ -25,5 +14,18 @@ J.~Gutierrez. M.~Gersabeck, C.~Parkes.
 M.~Adinolfi.
 \newblock Performance of the lhcb rich detector at the lhc.
 \newblock 2012, arXiv:1211.6759.
+
+\bibitem{1310.4740}
+R.~Aaij and et. al.
+\newblock Measurement of cp violation in the phase space of $b^{\pm}
+  \rightarrow k^{+} k^{-} \pi^{\pm}$ and $b^{\pm} \rightarrow \pi^{+} \pi^{-}
+  \pi^{\pm}$ decays.
+\newblock 2013, arXiv:1310.4740.
+
+\bibitem{Parkes:2016yie}
+Chris Parkes and et~al.
+\newblock {On model-independent searches for direct CP violation in multi-body
+  decays}.
+\newblock {\em J. Phys.}, G44(8):085001, 2017, 1612.04705.
 
 \end{thebibliography}

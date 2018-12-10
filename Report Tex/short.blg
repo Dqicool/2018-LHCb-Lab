@@ -3,48 +3,48 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: short.aux
 The style file: hunsrt.bst
 Database file #1: biblio.bib
-Warning--empty journal in 1310.4740
 Warning--empty journal in Labsc
 Warning--empty journal in 1211.6759
+Warning--empty journal in 1310.4740
 You've used 5 entries,
             1829 wiz_defined-function locations,
-            479 strings with 4263 characters,
-and the built_in function-call counts, 800 in all, are:
-= -- 61
+            484 strings with 4312 characters,
+and the built_in function-call counts, 882 in all, are:
+= -- 71
 > -- 28
 < -- 0
 + -- 12
 - -- 7
-* -- 34
-:= -- 136
-add.period$ -- 14
+* -- 48
+:= -- 151
+add.period$ -- 15
 call.type$ -- 5
 change.case$ -- 5
 chr.to.int$ -- 0
 cite$ -- 8
-duplicate$ -- 43
-empty$ -- 94
+duplicate$ -- 47
+empty$ -- 99
 format.name$ -- 7
-if$ -- 175
+if$ -- 191
 int.to.chr$ -- 0
 int.to.str$ -- 5
-missing$ -- 4
-newline$ -- 27
+missing$ -- 5
+newline$ -- 28
 num.names$ -- 5
-pop$ -- 25
+pop$ -- 19
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 18
+skip$ -- 17
 stack$ -- 0
-substring$ -- 18
+substring$ -- 36
 swap$ -- 2
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 3
-while$ -- 6
+while$ -- 7
 width$ -- 6
-write$ -- 51
+write$ -- 54
 (There were 3 warnings)
