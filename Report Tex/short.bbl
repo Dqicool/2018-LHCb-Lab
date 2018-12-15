@@ -1,25 +1,30 @@
 \begin{thebibliography}{1}
 
 \bibitem{1748-0221-3-08-S08005}
-et.~al. A~Augusto Alves~Jr.
-\newblock The lhcb detector at the lhc.
+A~Augusto~Alves Jr and et. al.
+\newblock {The LHCb Detector at the LHC}.
 \newblock {\em Journal of Instrumentation}, 3(08):S08005, 2008.
+
+\bibitem{1412.4094}
+Tom W.~B. Kibble and et. al.
+\newblock {The Standard Model of Particle Physics}, 2014, arXiv:1412.4094.
 
 \bibitem{Labsc}
 J.~Gutierrez. M.~Gersabeck, C.~Parkes.
-\newblock Measuring matter antimatter asymmetries at the large hadron collider.
+\newblock {Measuring Matter Antimatter Asymmetries at the Large Hadron
+  Collider}.
 \newblock 2015.
 
 \bibitem{1211.6759}
 M.~Adinolfi.
-\newblock Performance of the lhcb rich detector at the lhc.
+\newblock {Performance of the LHCb RICH detector at the LHC}.
 \newblock 2012, arXiv:1211.6759.
 
 \bibitem{1310.4740}
 R.~Aaij and et. al.
-\newblock Measurement of cp violation in the phase space of $b^{\pm}
-  \rightarrow k^{+} k^{-} \pi^{\pm}$ and $b^{\pm} \rightarrow \pi^{+} \pi^{-}
-  \pi^{\pm}$ decays.
+\newblock {Measurement of CP violation in the phase space of $B^{\pm}
+  \rightarrow K^{+} K^{-} \pi^{\pm}$ and $B^{\pm} \rightarrow \pi^{+} \pi^{-}
+  \pi^{\pm}$ decays}.
 \newblock 2013, arXiv:1310.4740.
 
 \bibitem{Parkes:2016yie}

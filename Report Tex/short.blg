@@ -6,45 +6,45 @@ Database file #1: biblio.bib
 Warning--empty journal in Labsc
 Warning--empty journal in 1211.6759
 Warning--empty journal in 1310.4740
-You've used 5 entries,
+You've used 6 entries,
             1829 wiz_defined-function locations,
-            484 strings with 4312 characters,
-and the built_in function-call counts, 882 in all, are:
-= -- 71
-> -- 28
+            489 strings with 4419 characters,
+and the built_in function-call counts, 1046 in all, are:
+= -- 82
+> -- 40
 < -- 0
-+ -- 12
-- -- 7
-* -- 48
-:= -- 151
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 5
++ -- 16
+- -- 10
+* -- 54
+:= -- 175
+add.period$ -- 17
+call.type$ -- 6
+change.case$ -- 6
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 47
-empty$ -- 99
-format.name$ -- 7
-if$ -- 191
+cite$ -- 9
+duplicate$ -- 53
+empty$ -- 119
+format.name$ -- 10
+if$ -- 230
 int.to.chr$ -- 0
-int.to.str$ -- 5
+int.to.str$ -- 6
 missing$ -- 5
-newline$ -- 28
-num.names$ -- 5
-pop$ -- 19
+newline$ -- 32
+num.names$ -- 6
+pop$ -- 26
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 17
+skip$ -- 23
 stack$ -- 0
 substring$ -- 36
-swap$ -- 2
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 3
-while$ -- 7
-width$ -- 6
-write$ -- 54
+while$ -- 8
+width$ -- 7
+write$ -- 63
 (There were 3 warnings)

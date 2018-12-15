@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.7)  10 DEC 2018 13:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.7)  14 DEC 2018 13:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -335,10 +335,10 @@ LaTeX Info: Redefining \nameref on input line 13.
 \@outlinefile=\write3
 \openout3 = `short.out'.
 
-<GA.png, id=28, 997.326pt x 399.4122pt>
+<GA.png, id=29, 997.326pt x 399.4122pt>
 File: GA.png Graphic file (type png)
 <use GA.png>
-Package pdftex.def Info: GA.png  used on input line 62.
+Package pdftex.def Info: GA.png  used on input line 61.
 (pdftex.def)             Requested size: 275.26227pt x 110.23788pt.
  [1{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
@@ -351,14 +351,14 @@ Package pdftex.def Info: GA.png  used on input line 62.
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: twoside 
 * h-part:(L,W,R)=(14.22636pt, 569.05515pt, 14.22636pt)
-* v-part:(T,H,B)=(11.38092pt, 819.43956pt, 14.22636pt)
+* v-part:(T,H,B)=(8.5359pt, 822.28458pt, 14.22636pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
 * \textwidth=569.05515pt
-* \textheight=819.43956pt
+* \textheight=822.28458pt
 * \oddsidemargin=-58.04362pt
 * \evensidemargin=-58.04362pt
-* \topmargin=-97.88907pt
+* \topmargin=-100.73409pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=12.0pt
@@ -377,24 +377,24 @@ Package pdftex.def Info: GA.png  used on input line 62.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-Underfull \hbox (badness 4518) in paragraph at lines 79--100
+Underfull \hbox (badness 4518) in paragraph at lines 79--99
 \OT1/cmr/m/n/12 In sum-mary, in-clu-sive CP asym-me-try is mea-
  []
 
 
-Underfull \hbox (badness 1057) in paragraph at lines 79--100
+Underfull \hbox (badness 1057) in paragraph at lines 79--99
 \OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 026(\OML/cmm/m/it/12 systematical\OT1/cmr/m/n/12 )$ to-tal un-cer-tainty is cal-cu-lated
  []
 
-<LocalAS.png, id=56, 513.8397pt x 384.9582pt>
+<LocalAS.png, id=58, 513.8397pt x 384.9582pt>
 File: LocalAS.png Graphic file (type png)
 <use LocalAS.png>
-Package pdftex.def Info: LocalAS.png  used on input line 103.
+Package pdftex.def Info: LocalAS.png  used on input line 102.
 (pdftex.def)             Requested size: 272.33374pt x 204.02687pt.
-<ZoomFinal.png, id=57, 1454.7951pt x 954.9276pt>
+<ZoomFinal.png, id=59, 1454.7951pt x 954.9276pt>
 File: ZoomFinal.png Graphic file (type png)
 <use ZoomFinal.png>
-Package pdftex.def Info: ZoomFinal.png  used on input line 124.
+Package pdftex.def Info: ZoomFinal.png  used on input line 123.
 (pdftex.def)             Requested size: 269.13287pt x 176.65883pt.
 (./short.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 137.
@@ -410,18 +410,18 @@ Package rerunfilecheck Info: File `short.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 137.
  ) 
 Here is how much of TeX's memory you used:
- 6348 strings out of 492649
- 91941 string characters out of 6129622
- 204145 words of memory out of 5000000
- 10148 multiletter control sequences out of 15000+600000
+ 6350 strings out of 492649
+ 91966 string characters out of 6129622
+ 204176 words of memory out of 5000000
+ 10149 multiletter control sequences out of 15000+600000
  10772 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,10n,28p,288b,318s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 28i,10n,28p,267b,318s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on short.pdf (2 pages, 3357903 bytes).
+Output written on short.pdf (2 pages, 3357871 bytes).
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
- 98 compressed objects within 1 object stream
- 18 named destinations out of 1000 (max. 500000)
+ 129 PDF objects out of 1000 (max. 8388607)
+ 102 compressed objects within 2 object streams
+ 19 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

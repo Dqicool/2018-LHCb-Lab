@@ -29,8 +29,8 @@
     //3.1 choose Fitting method
         #define BACKG_EXP
 
-        //#define SIGNAL_DOUBLE_GAUS
-        #define SIGNAL_CRUIJFF
+        #define SIGNAL_DOUBLE_GAUS
+        //#define SIGNAL_CRUIJFF
         //#define SIGNAL_LORENTZ
         
         #define SHOULDER_GAUS
